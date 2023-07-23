@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import "src/styles/root.scss";
 import React from "react";
 import { Instrument_Sans } from "next/font/google";
+import "src/styles/global.css";
 
 export const metadata: Metadata = {
   title: "Frontend Mentor | Link-sharing app - created by Gihwan-dev",
@@ -26,13 +27,18 @@ const instrumentSans = Instrument_Sans({
 });
 
 export default function RootLayout({
+  login,
   children,
 }: {
+  login: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <html lang="en" className={instrumentSans.className}>
-      <body>{children}</body>
+      <body>
+        {login}
+        {children}
+      </body>
     </html>
   );
 }

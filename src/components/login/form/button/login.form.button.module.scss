@@ -1,0 +1,13 @@
+@import "src/styles/root";
+
+.btn {
+  width: 100%;
+  padding: 0.7rem 1.7rem;
+  border-radius: 0.5rem;
+  background-color: $BLUE-DEFAULT;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  color: white;
+}
