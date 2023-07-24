@@ -1,14 +1,20 @@
 .container {
-  width: fit-content;
-  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
   background-color: white;
+  padding: 2.5rem;
 
   form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+  }
+}
+
+
+@media (max-width: 375px) {
+  .container {
+    padding: 2rem;
   }
 }
