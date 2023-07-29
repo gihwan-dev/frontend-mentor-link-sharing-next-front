@@ -4,10 +4,18 @@
   width: 100%;
   padding: 0.7rem 1.7rem;
   border-radius: 0.5rem;
+  border: 1px solid $BLUE-DEFAULT;
   background-color: $BLUE-DEFAULT;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
   line-height: 150%;
   color: white;
+}
+
+.btn:hover {
+  cursor: pointer;
+  border: 1px solid $BLUE-ACTIVE;
+  background-color: $BLUE-ACTIVE;
+  box-shadow: 0 0 32px 0 rgba(99, 60, 255, 0.25);
 }
