@@ -13,6 +13,10 @@ import AuthChange from "@/components/login/form/auth.change/auth.change";
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
 
+  const createSubmitHandler = () => {};
+
+  const loginSubmitHandler = () => {};
+
   return (
     <section className={styles.container}>
       <header>
@@ -21,7 +25,7 @@ const LoginForm = () => {
           paragraph={"Add your details below to get back into the app."}
         />
       </header>
-      <form>
+      <form onSubmit={isLoginMode ? loginSubmitHandler : createSubmitHandler}>
         <LoginFormInput
           icon={emailIcon}
           placeholder={"e.g alex@email.com"}
