@@ -3,16 +3,26 @@
 import Image from "next/image";
 import styles from "./login.form.input.module.scss";
 import { FocusEvent, FormEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  setConfirmPasswordValidation,
+  setEmailValidation,
+  setPasswordValidation,
+} from "@/stores/formSlice";
 
 const LoginFormInput: React.FC<{
   icon: string;
   placeholder: string;
   type: "email" | "password";
   label: string;
-}> = ({ icon, placeholder, type, label }) => {
+  isValidInput: boolean;
+  errMsg: string;
+}> = ({ icon, placeholder, type, label, isValidInput, errMsg }) => {
   const [isActive, setIsActive] = useState(false);
 
   const [enteredInput, setEnteredInput] = useState("");
+
+  const validationDispatch = useDispatch();
 
   const inputChangeHandler = (event: FormEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -20,6 +30,17 @@ const LoginFormInput: React.FC<{
   };
 
   const onFocusHandler = (event: FocusEvent<HTMLInputElement>) => {
+    if (!isValidInput) {
+      switch (type) {
+        case "email":
+          validationDispatch(setEmailValidation(true));
+          break;
+        case "password":
+          validationDispatch(setPasswordValidation(true));
+          validationDispatch(setConfirmPasswordValidation(true));
+          break;
+      }
+    }
     setIsActive(true);
   };
 
@@ -27,23 +48,7 @@ const LoginFormInput: React.FC<{
     setIsActive(false);
   };
 
-  // 아래 코드들 redux로 대체 예정.
-  // const emailValidationHandler = (targetEmail: string) => {};
-  //
-  // const passwordValidationHandler = (targetPassword: string) => {};
-  //
-  // const validateInput = (targetString: string) => {
-  //   switch (type) {
-  //     case "email":
-  //       emailValidationHandler(targetString);
-  //       break;
-  //     case "password":
-  //       passwordValidationHandler(targetString);
-  //       break;
-  //   }
-  // };
-
-  return (
+  const validInput = (
     <div className={styles.container}>
       <label>{label}</label>
       <div
@@ -53,6 +58,7 @@ const LoginFormInput: React.FC<{
       >
         <Image src={icon} alt={"icon"} />
         <input
+          value={enteredInput}
           onChange={inputChangeHandler}
           onBlur={onBlurHandler}
           onFocus={onFocusHandler}
@@ -62,6 +68,26 @@ const LoginFormInput: React.FC<{
       </div>
     </div>
   );
+
+  const invalidInput = (
+    <div className={styles["container-error"]}>
+      <label>{label}</label>
+      <div className={styles["input-container"]}>
+        <Image src={icon} alt={"icon"} />
+        <input
+          value={enteredInput}
+          onChange={inputChangeHandler}
+          onBlur={onBlurHandler}
+          onFocus={onFocusHandler}
+          type={type}
+          placeholder={placeholder}
+        />
+        <p>{errMsg}</p>
+      </div>
+    </div>
+  );
+
+  return <>{isValidInput ? validInput : invalidInput}</>;
 };
 
 export default LoginFormInput;

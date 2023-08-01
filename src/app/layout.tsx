@@ -3,6 +3,7 @@ import "src/styles/root.scss";
 import React from "react";
 import { Instrument_Sans } from "next/font/google";
 import "src/styles/global.css";
+import ReduxProvider from "@/providers/redux.provider";
 
 export const metadata: Metadata = {
   title: "Frontend Mentor | Link-sharing app - created by Gihwan-dev",
@@ -36,8 +37,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={instrumentSans.className}>
       <body>
-        {login}
-        {children}
+        <ReduxProvider>
+          {login}
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );
