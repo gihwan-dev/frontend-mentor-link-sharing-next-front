@@ -4,57 +4,137 @@ import LoginFormInput from "@/components/login/form/input/login.form.input";
 import emailIcon from "public/assets/images/icon-email.svg";
 import password from "public/assets/images/icon-password.svg";
 import LoginFormAuthTitle from "@/components/login/form/auth.title/login.form.auth.title";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import LoginFormButton from "@/components/login/form/button/login.form.button";
-
-import styles from "./login.form.module.scss";
 import AuthChange from "@/components/login/form/auth.change/auth.change";
+import { isValidPassword } from "@/utilities/login/validation";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
+import {
+  clearValidationState,
+  setEmailValidation,
+  setPasswordValidation,
+} from "@/stores/formSlice";
+import styles from "./login.form.module.scss";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
 
-  const createSubmitHandler = () => {};
+  const [isValidForm, setIsValidForm] = useState(true);
 
-  const loginSubmitHandler = () => {};
+  const validationState = useAppSelector(state => state.validation);
 
-  return (
-    <section className={styles.container}>
+  const setCreateModeHandler = () => {
+    setIsLoginMode(false);
+  };
+
+  const validationDispatch = useAppDispatch();
+
+  const createSubmitHandler = (event: FormEvent<HTMLFormElement>) => {};
+
+  const setLoginModeHandler = () => {
+    validationDispatch(clearValidationState());
+
+    setIsLoginMode(false);
+  };
+
+  const loginSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const emailInputElement = form.elements[0] as HTMLInputElement;
+    const passwordInputElement = form.elements[1] as HTMLInputElement;
+
+    if (
+      !emailInputElement.validity.valid ||
+      emailInputElement.value.length === 0
+    ) {
+      validationDispatch(setEmailValidation(false));
+      setIsValidForm(false);
+    }
+
+    if (!isValidPassword(passwordInputElement.value)) {
+      validationDispatch(setPasswordValidation(false));
+      setIsValidForm(false);
+    }
+
+    if (!isValidForm) {
+      return;
+    }
+
+    // fetch 함수 작성 후 login 로직 작성.
+  };
+
+  const loginModeContent = (
+    <section key={"login"} className={`${styles.container} ${styles.login}`}>
       <header>
         <LoginFormAuthTitle
           title={"Login"}
           paragraph={"Add your details below to get back into the app."}
         />
       </header>
-      <form onSubmit={isLoginMode ? loginSubmitHandler : createSubmitHandler}>
+      <form onSubmit={loginSubmitHandler} noValidate={true}>
         <LoginFormInput
           icon={emailIcon}
           placeholder={"e.g alex@email.com"}
           type={"email"}
           label={"Email address"}
+          isValidInput={validationState.email}
+          errMsg={"Not valid email"}
         />
         <LoginFormInput
           icon={password}
-          placeholder={
-            isLoginMode ? "Enter your password" : "At least 8 characters"
-          }
+          placeholder={"Enter your password"}
           type={"password"}
-          label={"Create password"}
+          label={"Enter your password"}
+          isValidInput={validationState.password}
+          errMsg={"Please check again"}
         />
-        {isLoginMode ? null : (
-          <LoginFormInput
-            icon={password}
-            placeholder={"At least 8 characters"}
-            type={"password"}
-            label={"Confirm password"}
-          />
-        )}
-        <LoginFormButton
-          content={isLoginMode ? "Login" : "Create new account"}
-        />
-        <AuthChange mode={isLoginMode ? "login" : "create"} />
+        <LoginFormButton content="Login" />
+        <AuthChange changeModeHandler={setCreateModeHandler} mode="login" />
       </form>
     </section>
   );
+
+  const createModeContent = (
+    <section key={"create"} className={`${styles.container} ${styles.create}`}>
+      <header>
+        <LoginFormAuthTitle
+          title={"Create account"}
+          paragraph={"Let's get you started sharing your links!"}
+        />
+      </header>
+      <form onSubmit={createSubmitHandler} noValidate={true}>
+        <LoginFormInput
+          icon={emailIcon}
+          placeholder={"e.g alex@email.com"}
+          type={"email"}
+          label={"Email address"}
+          isValidInput={validationState.email}
+          errMsg={"Can't be empty"}
+        />
+        <LoginFormInput
+          icon={password}
+          placeholder="At least 8 characters"
+          type={"password"}
+          label={"Create password"}
+          isValidInput={validationState.password}
+          errMsg={"Please check again"}
+        />
+        <LoginFormInput
+          icon={password}
+          placeholder={"At least 8 characters"}
+          type={"password"}
+          label={"Confirm password"}
+          isValidInput={validationState.confirmPassword}
+          errMsg={"Please confirm again"}
+        />
+        <p>please check at least 8 characters.</p>
+        <LoginFormButton content="Create new account" />
+        <AuthChange changeModeHandler={setLoginModeHandler} mode="create" />
+      </form>
+    </section>
+  );
+
+  return <>{isLoginMode ? loginModeContent : createModeContent}</>;
 };
 
 export default LoginForm;
