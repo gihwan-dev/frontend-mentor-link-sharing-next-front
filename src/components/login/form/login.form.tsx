@@ -11,10 +11,12 @@ import { isValidPassword } from "@/utilities/login/validation";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import {
   clearValidationState,
+  setConfirmPasswordValidation,
   setEmailValidation,
   setPasswordValidation,
 } from "@/stores/formSlice";
 import styles from "./login.form.module.scss";
+import { SERVER_URL } from "@/const";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -29,16 +31,63 @@ const LoginForm = () => {
 
   const validationDispatch = useAppDispatch();
 
-  const createSubmitHandler = (event: FormEvent<HTMLFormElement>) => {};
-
   const setLoginModeHandler = () => {
     validationDispatch(clearValidationState());
 
     setIsLoginMode(false);
   };
 
+  const createSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    validationDispatch(clearValidationState());
+    const form = event.currentTarget;
+    const emailInputElement = form.elements[0] as HTMLInputElement;
+    const passwordInputElement = form.elements[1] as HTMLInputElement;
+    const confirmPasswordInputElement = form.elements[2] as HTMLInputElement;
+
+    if (
+      !emailInputElement.validity.valid ||
+      emailInputElement.value.length === 0
+    ) {
+      validationDispatch(setEmailValidation(false));
+      setIsValidForm(false);
+    }
+
+    if (!isValidPassword(passwordInputElement.value)) {
+      validationDispatch(setPasswordValidation(false));
+      setIsValidForm(false);
+    }
+
+    if (passwordInputElement.value !== confirmPasswordInputElement.value) {
+      validationDispatch(setConfirmPasswordValidation(false));
+      setIsValidForm(false);
+    }
+
+    if (!isValidForm) {
+      return;
+    }
+
+    setIsValidForm(true);
+
+    try {
+      const response = await fetch(`${SERVER_URL}/auth`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailInputElement.value,
+          password: passwordInputElement.value,
+        }),
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const loginSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    validationDispatch(clearValidationState());
     const form = event.currentTarget;
     const emailInputElement = form.elements[0] as HTMLInputElement;
     const passwordInputElement = form.elements[1] as HTMLInputElement;
@@ -59,6 +108,8 @@ const LoginForm = () => {
     if (!isValidForm) {
       return;
     }
+
+    setIsValidForm(true);
 
     // fetch 함수 작성 후 login 로직 작성.
   };
