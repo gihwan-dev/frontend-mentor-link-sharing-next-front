@@ -4,6 +4,7 @@ import React from "react";
 import { Instrument_Sans } from "next/font/google";
 import "src/styles/global.css";
 import ReduxProvider from "@/providers/redux.provider";
+import { SERVER_URL } from "@/const";
 
 export const metadata: Metadata = {
   title: "Frontend Mentor | Link-sharing app - created by Gihwan-dev",
@@ -27,13 +28,14 @@ const instrumentSans = Instrument_Sans({
   display: "swap",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   login,
   children,
 }: {
   login: React.ReactNode;
   children: React.ReactNode;
 }) {
+  const result = await fetch(`${SERVER_URL}/auth`, {});
   return (
     <html lang="en" className={instrumentSans.className}>
       <body>

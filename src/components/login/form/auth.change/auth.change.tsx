@@ -10,7 +10,9 @@ const AuthChange: React.FC<{
       content = (
         <div className={styles.container}>
           <p>{"Don't have an account?"}</p>
-          <button onClick={changeModeHandler}>Create account</button>
+          <button type={"button"} onClick={changeModeHandler}>
+            Create account
+          </button>
         </div>
       );
       break;
@@ -18,7 +20,9 @@ const AuthChange: React.FC<{
       content = (
         <div className={styles.container}>
           <p>Already have an account?</p>
-          <button onClick={changeModeHandler}>Login</button>
+          <button type={"button"} onClick={changeModeHandler}>
+            Login
+          </button>
         </div>
       );
   }

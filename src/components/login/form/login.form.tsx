@@ -17,15 +17,21 @@ import {
 } from "@/stores/formSlice";
 import styles from "./login.form.module.scss";
 import { SERVER_URL } from "@/const";
+import { StatusCodes } from "http-status-codes";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
 
   const [isValidForm, setIsValidForm] = useState(true);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isCreated, setIsCreated] = useState(false);
+
   const validationState = useAppSelector(state => state.validation);
 
   const setCreateModeHandler = () => {
+    validationDispatch(clearValidationState());
     setIsLoginMode(false);
   };
 
@@ -33,12 +39,12 @@ const LoginForm = () => {
 
   const setLoginModeHandler = () => {
     validationDispatch(clearValidationState());
-
-    setIsLoginMode(false);
+    setIsLoginMode(true);
   };
 
   const createSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     validationDispatch(clearValidationState());
     const form = event.currentTarget;
     const emailInputElement = form.elements[0] as HTMLInputElement;
@@ -80,12 +86,25 @@ const LoginForm = () => {
           password: passwordInputElement.value,
         }),
       });
+
+      if (response.status === StatusCodes.CREATED) {
+        // 성공 화면 보여주고 로그인 컴포넌트 띄워 줘야함.
+        setIsLoading(false);
+        setIsCreated(true);
+        setTimeout(() => {
+          setIsCreated(false);
+          setIsLoginMode(true);
+        }, 2000);
+      }
+      const data = (await response.json()) as { message: string };
+
+      window.alert(data.message);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const loginSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
+  const loginSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     validationDispatch(clearValidationState());
     const form = event.currentTarget;
@@ -112,7 +131,35 @@ const LoginForm = () => {
     setIsValidForm(true);
 
     // fetch 함수 작성 후 login 로직 작성.
+    try {
+      const response = await fetch(`${SERVER_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailInputElement.value,
+          password: passwordInputElement.value,
+        }),
+      });
+      if (response.status !== StatusCodes.ACCEPTED) {
+        // 실패 로직 작성.
+      }
+      console.log(response);
+    } catch (e) {}
   };
+
+  if (isLoading) {
+    return <div className={styles.loading}></div>;
+  }
+
+  if (isCreated) {
+    return (
+      <div className={styles.success}>
+        <h1>Create successfully!</h1>
+      </div>
+    );
+  }
 
   const loginModeContent = (
     <section key={"login"} className={`${styles.container} ${styles.login}`}>
