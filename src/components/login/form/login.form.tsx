@@ -26,11 +26,15 @@ const LoginForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isCreated, setIsCreated] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   const [successMsg, setSuccessMsg] = useState("");
 
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
+
   const validationState = useAppSelector(state => state.validation);
+
+  const [failedMsg, setFailedMsg] = useState("");
 
   const setCreateModeHandler = () => {
     validationDispatch(clearValidationState());
@@ -94,9 +98,9 @@ const LoginForm = () => {
         const data = (await response.json()) as { message: string };
         setSuccessMsg(data.message);
         setIsLoading(false);
-        setIsCreated(true);
+        setIsSuccessful(true);
         setTimeout(() => {
-          setIsCreated(false);
+          setIsSuccessful(false);
           setIsLoginMode(true);
         }, 2000);
       }
@@ -107,6 +111,7 @@ const LoginForm = () => {
 
   const loginSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     validationDispatch(clearValidationState());
     const form = event.currentTarget;
     const emailInputElement = form.elements[0] as HTMLInputElement;
@@ -146,8 +151,32 @@ const LoginForm = () => {
       });
       if (response.status !== StatusCodes.ACCEPTED) {
         // 실패 로직 작성.
+        const failedData = await response.json();
+        validationDispatch(setEmailValidation(false));
+        validationDispatch(setPasswordValidation(false));
+        setFailedMsg(
+          failedData?.message ?? "로그인에 실패했습니다. 다시시도해 주세요.",
+        );
+        setTimeout(() => {
+          setIsLoading(false);
+          setIsLoginFailed(true);
+          setTimeout(() => {
+            setIsLoginFailed(false);
+          }, 2000);
+        }, 2000);
       }
-      console.log(response);
+      const data = (await response.json()) as { message: string };
+      setSuccessMsg(data.message);
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsSuccessful(true);
+        setTimeout(() => {
+          setIsSuccessful(true);
+          setTimeout(() => {
+            // 리디렉션
+          }, 2000);
+        }, 2000);
+      }, 2000);
     } catch (e) {}
   };
 
@@ -155,10 +184,18 @@ const LoginForm = () => {
     return <div className={styles.loading}></div>;
   }
 
-  if (isCreated) {
+  if (isSuccessful) {
     return (
       <div className={styles.success}>
         <h1>{successMsg}</h1>
+      </div>
+    );
+  }
+
+  if (isLoginFailed) {
+    return (
+      <div className={styles.failed}>
+        <h1>{failedMsg}</h1>
       </div>
     );
   }

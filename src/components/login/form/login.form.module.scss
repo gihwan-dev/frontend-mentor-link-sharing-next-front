@@ -43,6 +43,12 @@
   animation: fade-in 1.5s ease-in-out;
 }
 
+.failed {
+  color: $BLACK;
+  animation-delay: 0.5s;
+  animation: fade-in 1.5s ease-in-out;
+}
+
 @keyframes fade-in {
   0% {
     opacity: 0;
