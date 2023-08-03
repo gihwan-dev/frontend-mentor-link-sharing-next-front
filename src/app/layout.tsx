@@ -35,7 +35,10 @@ export default async function RootLayout({
   login: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const result = await fetch(`${SERVER_URL}/auth`, {});
+  const result = await fetch(`${SERVER_URL}/user`, {
+    cache: "no-cache",
+    credentials: "include",
+  });
   return (
     <html lang="en" className={instrumentSans.className}>
       <body>
