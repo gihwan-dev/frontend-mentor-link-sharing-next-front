@@ -28,6 +28,8 @@ const LoginForm = () => {
 
   const [isCreated, setIsCreated] = useState(false);
 
+  const [successMsg, setSuccessMsg] = useState("");
+
   const validationState = useAppSelector(state => state.validation);
 
   const setCreateModeHandler = () => {
@@ -76,7 +78,7 @@ const LoginForm = () => {
     setIsValidForm(true);
 
     try {
-      const response = await fetch(`${SERVER_URL}/auth`, {
+      const response = await fetch(`${SERVER_URL}/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,6 +91,8 @@ const LoginForm = () => {
 
       if (response.status === StatusCodes.CREATED) {
         // 성공 화면 보여주고 로그인 컴포넌트 띄워 줘야함.
+        const data = (await response.json()) as { message: string };
+        setSuccessMsg(data.message);
         setIsLoading(false);
         setIsCreated(true);
         setTimeout(() => {
@@ -96,9 +100,6 @@ const LoginForm = () => {
           setIsLoginMode(true);
         }, 2000);
       }
-      const data = (await response.json()) as { message: string };
-
-      window.alert(data.message);
     } catch (e) {
       console.error(e);
     }
@@ -132,11 +133,12 @@ const LoginForm = () => {
 
     // fetch 함수 작성 후 login 로직 작성.
     try {
-      const response = await fetch(`${SERVER_URL}/auth/login`, {
+      const response = await fetch(`${SERVER_URL}/auth`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           email: emailInputElement.value,
           password: passwordInputElement.value,
@@ -156,7 +158,7 @@ const LoginForm = () => {
   if (isCreated) {
     return (
       <div className={styles.success}>
-        <h1>Create successfully!</h1>
+        <h1>{successMsg}</h1>
       </div>
     );
   }
