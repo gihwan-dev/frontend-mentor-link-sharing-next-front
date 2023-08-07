@@ -1,0 +1,58 @@
+@import "src/styles/root";
+
+.container {
+  display: flex;
+  a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: fit-content;
+    text-decoration: none;
+    padding: 0.7rem 1.7rem ;
+
+    svg {
+      path {
+        color: $GREY-DEFAULT;
+      }
+    }
+
+
+    p {
+      color: $GREY-DEFAULT;
+      font-size:1rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 150%;
+    }
+  }
+
+  a:hover {
+    border-radius: 0.5rem;
+
+      p {
+        color: $BLUE-DEFAULT;
+      }
+
+      svg {
+        path {
+          fill: $BLUE-DEFAULT;
+        }
+      }
+    }
+}
+
+.active {
+  background-color: $BLUE-DISABLED;
+  border-radius: 0.5rem;
+    p {
+      color:$BLUE-DEFAULT !important;
+    }
+
+  svg {
+    path {
+      fill: $BLUE-DEFAULT;
+    }
+  }
+}

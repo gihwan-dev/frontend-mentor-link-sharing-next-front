@@ -1,8 +1,8 @@
 "use client";
 
 import LoginFormInput from "@/components/login/form/input/login.form.input";
-import emailIcon from "public/assets/images/icon-email.svg";
-import password from "public/assets/images/icon-password.svg";
+import EmailIcon from "public/assets/images/icon-email.svg";
+import PasswordIcon from "public/assets/images/icon-password.svg";
 import LoginFormAuthTitle from "@/components/login/form/auth.title/login.form.auth.title";
 import { FormEvent, useState } from "react";
 import LoginFormButton from "@/components/login/form/button/login.form.button";
@@ -18,6 +18,7 @@ import {
 import styles from "./login.form.module.scss";
 import { SERVER_URL } from "@/const";
 import { StatusCodes } from "http-status-codes";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -35,6 +36,8 @@ const LoginForm = () => {
   const validationState = useAppSelector(state => state.validation);
 
   const [failedMsg, setFailedMsg] = useState("");
+
+  const router = useRouter();
 
   const setCreateModeHandler = () => {
     validationDispatch(clearValidationState());
@@ -174,7 +177,8 @@ const LoginForm = () => {
           setIsSuccessful(true);
           setTimeout(() => {
             // 리디렉션
-          }, 2000);
+            router.push("/main/links");
+          }, 1500);
         }, 2000);
       }, 2000);
     } catch (e) {}
@@ -210,7 +214,7 @@ const LoginForm = () => {
       </header>
       <form onSubmit={loginSubmitHandler} noValidate={true}>
         <LoginFormInput
-          icon={emailIcon}
+          icon={EmailIcon}
           placeholder={"e.g alex@email.com"}
           type={"email"}
           label={"Email address"}
@@ -218,7 +222,7 @@ const LoginForm = () => {
           errMsg={"Not valid email"}
         />
         <LoginFormInput
-          icon={password}
+          icon={PasswordIcon}
           placeholder={"Enter your password"}
           type={"password"}
           label={"Enter your password"}
@@ -241,7 +245,7 @@ const LoginForm = () => {
       </header>
       <form onSubmit={createSubmitHandler} noValidate={true}>
         <LoginFormInput
-          icon={emailIcon}
+          icon={EmailIcon}
           placeholder={"e.g alex@email.com"}
           type={"email"}
           label={"Email address"}
@@ -249,7 +253,7 @@ const LoginForm = () => {
           errMsg={"Can't be empty"}
         />
         <LoginFormInput
-          icon={password}
+          icon={PasswordIcon}
           placeholder="At least 8 characters"
           type={"password"}
           label={"Create password"}
@@ -257,7 +261,7 @@ const LoginForm = () => {
           errMsg={"Please check again"}
         />
         <LoginFormInput
-          icon={password}
+          icon={PasswordIcon}
           placeholder={"At least 8 characters"}
           type={"password"}
           label={"Confirm password"}

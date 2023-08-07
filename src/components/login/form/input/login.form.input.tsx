@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import styles from "./login.form.input.module.scss";
-import { FocusEvent, FormEvent, useState } from "react";
+import React, { FocusEvent, FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   setConfirmPasswordValidation,
@@ -11,7 +10,7 @@ import {
 } from "@/stores/formSlice";
 
 const LoginFormInput: React.FC<{
-  icon: string;
+  icon: React.FC;
   placeholder: string;
   type: "email" | "password";
   label: string;
@@ -23,6 +22,8 @@ const LoginFormInput: React.FC<{
   const [enteredInput, setEnteredInput] = useState("");
 
   const validationDispatch = useDispatch();
+
+  const Icon = icon;
 
   const inputChangeHandler = (event: FormEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -56,7 +57,7 @@ const LoginFormInput: React.FC<{
           isActive ? styles.isActive : null
         }`}
       >
-        <Image src={icon} alt={"icon"} />
+        <Icon />
         <input
           value={enteredInput}
           onChange={inputChangeHandler}
@@ -73,7 +74,7 @@ const LoginFormInput: React.FC<{
     <div className={styles["container-error"]}>
       <label>{label}</label>
       <div className={styles["input-container"]}>
-        <Image src={icon} alt={"icon"} />
+        <Icon />
         <input
           value={enteredInput}
           onChange={inputChangeHandler}
