@@ -1,0 +1,18 @@
+@import "src/styles/root";
+
+.button {
+  padding: 0.7rem 1.7rem;
+  border-radius: 0.5rem;
+  background-color: $BLUE-DEFAULT;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 150%;
+}
+
+.button:hover {
+  background-color: $BLUE-ACTIVE;
+  border: 1px solid $BLUE-ACTIVE;
+  cursor: pointer;
+}

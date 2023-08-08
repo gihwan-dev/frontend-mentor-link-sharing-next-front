@@ -1,0 +1,23 @@
+@import "src/styles/root";
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  h1 {
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    color: $BLACK;
+  }
+
+   p {
+     font-size: 1rem;
+     font-style: normal;
+     font-weight: 400;
+     line-height: 150%;
+     color: $GREY-DEFAULT;
+   }
+}

@@ -1,15 +1,13 @@
 import { cookies } from "next/headers";
 import styles from "./page.module.scss";
 import Link from "next/link";
+import MainRoot from "@/components/main/main.root";
 
 const EditPage = () => {
   const cookieStore = cookies();
   const userCookie = cookieStore.get("frontend-mentor-link-sharing")?.value;
-  let content = (
-    <div>
-      <h1>Edit Page.</h1>
-    </div>
-  );
+
+  let content = <MainRoot />;
 
   if (!userCookie) {
     content = (
