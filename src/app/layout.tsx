@@ -26,7 +26,6 @@ const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   display: "swap",
 });
-
 export default function RootLayout({
   children,
 }: {
