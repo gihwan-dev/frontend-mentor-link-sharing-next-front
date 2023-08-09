@@ -1,0 +1,17 @@
+@import "src/styles/root";
+
+.link {
+  text-decoration: none;
+  color: $BLUE-DEFAULT;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  padding: 0.7rem 1.7rem;
+  border: solid 1px $BLUE-DEFAULT;
+  border-radius: 0.5rem;
+}
+
+.link:hover {
+  background-color: $BLUE-DISABLED;
+}

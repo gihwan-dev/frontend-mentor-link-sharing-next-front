@@ -1,0 +1,59 @@
+@import "src/styles/root.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  background-color: white;
+  padding: 2.5rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+
+@media (max-width: 375px) {
+  .container {
+    padding: 2rem;
+  }
+}
+
+.loading {
+  width: 150px;
+  height: 150px;
+  border: 12px solid $GREY-LIGHT;
+  border-radius: 100%;
+  border-right-color: $BLUE-DEFAULT;
+  align-self: center;
+  animation: spin 1s infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.success {
+  color: $BLACK;
+  animation-delay: 0.5s;
+  animation: fade-in 1.5s ease-in-out;
+}
+
+.failed {
+  color: $BLACK;
+  animation-delay: 0.5s;
+  animation: fade-in 1.5s ease-in-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
