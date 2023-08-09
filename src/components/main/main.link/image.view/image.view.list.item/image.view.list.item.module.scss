@@ -1,0 +1,43 @@
+.container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  padding: 0.7rem 1rem;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.5rem;
+
+  .platform {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    align-items: center;
+  }
+
+  div {
+    display: flex;
+  }
+}
+
+.svg-white {
+  svg {
+    path {
+      fill: #737373;
+    }
+
+    path:first-child {
+      fill: white;
+    }
+  }
+
+}
+
+.svg-black {
+  svg {
+    fill: none;
+  }
+}

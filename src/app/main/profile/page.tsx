@@ -1,6 +1,8 @@
+import styles from "./page.module.scss";
+
 const ProfilePage = () => {
   return (
-    <div>
+    <div className={styles.main}>
       <h1>Profile page.</h1>
     </div>
   );
