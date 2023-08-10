@@ -1,11 +1,7 @@
-import styles from "./page.module.scss";
+import MainProfile from "@/components/main/main.profile/main.profile";
 
 const ProfilePage = () => {
-  return (
-    <div className={styles.main}>
-      <h1>Profile page.</h1>
-    </div>
-  );
+  return <MainProfile />;
 };
 
 export default ProfilePage;

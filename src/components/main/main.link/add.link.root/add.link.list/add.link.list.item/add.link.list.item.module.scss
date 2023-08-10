@@ -161,7 +161,14 @@
   }
 }
 
+.drop-down-menu::-webkit-scrollbar {
+  display: none;
+}
+
+
 .drop-down-menu {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   position: relative;
   height: 10rem;
   overflow: scroll;

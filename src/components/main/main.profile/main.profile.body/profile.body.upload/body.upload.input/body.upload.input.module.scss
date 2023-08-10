@@ -1,0 +1,30 @@
+@import "src/styles/root";
+
+.upload {
+  position: relative;
+  width: 12rem;
+  height: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.5rem;
+  background-color: $BLUE-DISABLED;
+  border-radius: 0.75rem;
+
+  p {
+    color: $BLUE-DEFAULT;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+  }
+
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
