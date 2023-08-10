@@ -2,11 +2,14 @@
 
 import styles from "./body.upload.input.module.scss";
 import UploadImage from "public/assets/images/icon-upload-image.svg";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
+import { setImage } from "@/stores/user-info.slice";
 
 const BodyUploadInput = () => {
-  const [imagePreview, setImagePreview] = useState("");
+  const userImage = useAppSelector(state => state.user.image);
+  const dispatch = useAppDispatch();
 
   const onFileUploadedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -14,7 +17,7 @@ const BodyUploadInput = () => {
       window.alert("업로드에 실패했습니다. 다시 시도해 주세요.");
       return;
     }
-    setImagePreview(URL.createObjectURL(files[0]));
+    dispatch(setImage(files[0]));
   };
 
   return (
@@ -25,20 +28,27 @@ const BodyUploadInput = () => {
         type={"file"}
         name={"file"}
       />
-      {!imagePreview ? (
+      {!userImage ? (
         <>
           <UploadImage />
           <p>+ Upload Image</p>
         </>
       ) : (
-        <Image
-          objectFit={"cover"}
-          src={imagePreview}
-          fill={true}
-          width={180}
-          height={180}
-          alt={"image preview"}
-        />
+        <>
+          <Image
+            objectFit={"cover"}
+            src={URL.createObjectURL(userImage)}
+            fill={true}
+            alt={"image preview"}
+            style={{
+              borderRadius: "0.75rem",
+            }}
+          />
+          <div className={styles["text-overwrite"]}>
+            <UploadImage />
+            <p>Change Image</p>
+          </div>
+        </>
       )}
     </label>
   );
