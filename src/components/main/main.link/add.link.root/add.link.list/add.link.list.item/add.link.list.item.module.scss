@@ -31,10 +31,7 @@
         .top {
           display: flex;
           flex-direction: row;
-          justify-content: space-between;
           .btn-drag-and-drop {
-            display: flex;
-            flex-direction: row;
             align-items: center;
             background-color: transparent;
             border: none;
@@ -265,5 +262,9 @@
 
 .btn-remove:hover {
   color: $BLACK !important;
+  cursor: pointer;
+}
+
+.btn-drag-and-drop {
   cursor: pointer;
 }

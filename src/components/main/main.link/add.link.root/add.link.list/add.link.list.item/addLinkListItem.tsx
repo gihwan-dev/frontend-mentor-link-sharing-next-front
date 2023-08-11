@@ -4,7 +4,7 @@ import styles from "./add.link.list.item.module.scss";
 import DragAndDropIcon from "public/assets/images/icon-drag-and-drop.svg";
 import DownArrowIcon from "public/assets/images/icon-chevron-down.svg";
 import LinkIcon from "public/assets/images/icon-link.svg";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "@/stores/hooks";
 import { useDispatch } from "react-redux";
 import { removePlatform, setPlatform } from "@/stores/platform.slice";
@@ -16,11 +16,19 @@ const AddLinkListItem: React.FC<{
   const platform = useAppSelector(state => state.platform.platforms[index]);
   const platformDispatch = useDispatch();
 
+  const [initialX, setInitialX] = useState(0);
+  const [initialY, setInitialY] = useState(0);
+
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
   const [menuListBtnWidth, setMenuListBtnWidth] = useState(100);
+
+  const ref: React.Ref<HTMLLIElement> = useRef(null);
 
   const openMenuListHandler = () => {
     setIsMenuOpen(true);
@@ -39,14 +47,16 @@ const AddLinkListItem: React.FC<{
     setInputIsFocused(true);
   };
 
+  const onMouseMoveHandler = (event: React.MouseEvent) => {
+    setMouseX(event.clientX);
+    setMouseY(event.clientY);
+  };
+
   const onInputBlurHandler = () => {
     setInputIsFocused(false);
   };
 
-  const onMenuListClickHandler = (
-    selectedTitle: string,
-    selectedIcon: React.JSX.Element,
-  ) => {
+  const onMenuListClickHandler = (selectedTitle: string) => {
     platformDispatch(setPlatform({ index, title: selectedTitle }));
     setIsMenuOpen(false);
   };
@@ -74,9 +84,7 @@ const AddLinkListItem: React.FC<{
         return (
           <React.Fragment key={item.title}>
             <li
-              onClick={() =>
-                onMenuListClickHandler(item.title, <>{item.icon}</>)
-              }
+              onClick={() => onMenuListClickHandler(item.title)}
               className={item.title === platform.title ? styles.isActive : ""}
             >
               {item.icon}
@@ -90,9 +98,9 @@ const AddLinkListItem: React.FC<{
   );
 
   return (
-    <li className={styles.item}>
+    <li className={styles.item} onMouseMove={onMouseMoveHandler} ref={ref}>
       <div className={styles.top}>
-        <button className={styles["btn-drag-and-drop"]}>
+        <button className={styles["btn-drag-and-drop"]} draggable={true}>
           <DragAndDropIcon />
           <p>Link #{index + 1}</p>
         </button>

@@ -22,7 +22,7 @@ const ImageViewListItem: React.FC<{
     setWidth(rect.width - 32);
     setLeftPos(rect.left);
     setTopPos(rect.top);
-  }, []);
+  }, [index]);
   const styleObj = listColorSelector(title);
   return (
     <div
@@ -49,11 +49,11 @@ const ImageViewListItem: React.FC<{
         <p>{title}</p>
       </div>
       <div
-        className={
+        className={`${
           title === "Frontend Mentor"
             ? styles["svg-black"]
             : styles["svg-white"]
-        }
+        } ${styles.arrow}`}
       >
         <MoveToLinkIcon />
       </div>
