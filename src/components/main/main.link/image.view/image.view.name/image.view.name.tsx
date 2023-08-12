@@ -11,7 +11,17 @@ const ImageViewName = () => {
   const [topPos, setTopPos] = useState(0);
   const [width, setWidth] = useState(0);
 
+  const viewPortChangeHandler = () => {
+    const rectElement = document.getElementsByTagName("rect");
+    const rect = rectElement!.item(0)!.getBoundingClientRect();
+    setWidth(rect.width);
+    setLeftPos(rect.left);
+    setTopPos(rect.top - 8);
+  };
+
   useEffect(() => {
+    window.addEventListener("resize", viewPortChangeHandler);
+
     const rectElement = document.getElementsByTagName("rect");
     const rect = rectElement!.item(0)!.getBoundingClientRect();
 
@@ -30,6 +40,9 @@ const ImageViewName = () => {
     setWidth(rect.width);
     setLeftPos(rect.left);
     setTopPos(rect.top - 8);
+    return () => {
+      window.removeEventListener("resize", viewPortChangeHandler);
+    };
   }, [user.firstName, user.lastName, user.email]);
 
   if (!user.firstName && !user.lastName && !user.email) {

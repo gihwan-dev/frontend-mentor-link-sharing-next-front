@@ -4,11 +4,17 @@ import styles from "./add.link.list.item.module.scss";
 import DragAndDropIcon from "public/assets/images/icon-drag-and-drop.svg";
 import DownArrowIcon from "public/assets/images/icon-chevron-down.svg";
 import LinkIcon from "public/assets/images/icon-link.svg";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@/stores/hooks";
 import { useDispatch } from "react-redux";
-import { removePlatform, setPlatform } from "@/stores/platform.slice";
+import {
+  removePlatform,
+  setLink,
+  setLinkValidation,
+  setPlatform,
+} from "@/stores/platform.slice";
 import { MenuList, renderIcon } from "@/utilities/link/links-utilities";
+import { Reorder, useDragControls } from "framer-motion";
 
 const AddLinkListItem: React.FC<{
   index: number;
@@ -16,19 +22,13 @@ const AddLinkListItem: React.FC<{
   const platform = useAppSelector(state => state.platform.platforms[index]);
   const platformDispatch = useDispatch();
 
-  const [initialX, setInitialX] = useState(0);
-  const [initialY, setInitialY] = useState(0);
-
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const controls = useDragControls();
 
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
   const [menuListBtnWidth, setMenuListBtnWidth] = useState(100);
-
-  const ref: React.Ref<HTMLLIElement> = useRef(null);
 
   const openMenuListHandler = () => {
     setIsMenuOpen(true);
@@ -47,11 +47,6 @@ const AddLinkListItem: React.FC<{
     setInputIsFocused(true);
   };
 
-  const onMouseMoveHandler = (event: React.MouseEvent) => {
-    setMouseX(event.clientX);
-    setMouseY(event.clientY);
-  };
-
   const onInputBlurHandler = () => {
     setInputIsFocused(false);
   };
@@ -59,6 +54,11 @@ const AddLinkListItem: React.FC<{
   const onMenuListClickHandler = (selectedTitle: string) => {
     platformDispatch(setPlatform({ index, title: selectedTitle }));
     setIsMenuOpen(false);
+  };
+
+  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    platformDispatch(setLinkValidation({ index, validation: true }));
+    platformDispatch(setLink({ index, link: event.currentTarget.value }));
   };
 
   useEffect(() => {
@@ -71,6 +71,10 @@ const AddLinkListItem: React.FC<{
       window.removeEventListener("resize", changeViewportHandler);
     };
   }, []);
+
+  if (!platform) {
+    return null;
+  }
 
   const menubar = (
     <ul
@@ -98,9 +102,17 @@ const AddLinkListItem: React.FC<{
   );
 
   return (
-    <li className={styles.item} onMouseMove={onMouseMoveHandler} ref={ref}>
+    <Reorder.Item
+      dragControls={controls}
+      dragListener={false}
+      value={platform}
+      className={styles.item}
+    >
       <div className={styles.top}>
-        <button className={styles["btn-drag-and-drop"]} draggable={true}>
+        <button
+          onPointerDown={e => controls.start(e)}
+          className={styles["btn-drag-and-drop"]}
+        >
           <DragAndDropIcon />
           <p>Link #{index + 1}</p>
         </button>
@@ -126,16 +138,31 @@ const AddLinkListItem: React.FC<{
       </div>
       <div className={styles["link-input"]}>
         <label>Link</label>
-        <div className={inputIsFocused ? styles["input-focused"] : ""}>
+        <div
+          className={
+            inputIsFocused
+              ? styles["input-focused"]
+              : platform.isLinkValid
+              ? ""
+              : styles.isInvalid
+          }
+        >
           <LinkIcon />
           <input
+            value={platform.link}
+            onChange={inputChangeHandler}
             inputMode={"url"}
             onFocus={onInputFocusHandler}
             onBlur={onInputBlurHandler}
           />
+          {platform.isLinkValid ? (
+            ""
+          ) : (
+            <p className={styles.invalidMsg}>Can not be empty.</p>
+          )}
         </div>
       </div>
-    </li>
+    </Reorder.Item>
   );
 };
 

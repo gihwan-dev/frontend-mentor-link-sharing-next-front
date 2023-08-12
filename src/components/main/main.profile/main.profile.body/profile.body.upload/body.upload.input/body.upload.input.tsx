@@ -17,7 +17,7 @@ const BodyUploadInput = () => {
       window.alert("업로드에 실패했습니다. 다시 시도해 주세요.");
       return;
     }
-    dispatch(setImage(files[0]));
+    dispatch(setImage(URL.createObjectURL(files[0])));
   };
 
   return (
@@ -37,7 +37,7 @@ const BodyUploadInput = () => {
         <>
           <Image
             objectFit={"cover"}
-            src={URL.createObjectURL(userImage)}
+            src={userImage}
             fill={true}
             alt={"image preview"}
             style={{

@@ -12,12 +12,25 @@ const ImageViewProfileImage = () => {
 
   const image = useAppSelector(state => state.user.image);
 
-  useEffect(() => {
+  const viewPortChangeHandler = () => {
     const rectElement = document.getElementsByTagName("circle");
     const rect = rectElement!.item(0)!.getBoundingClientRect();
     setWidth(rect.width);
     setLeftPos(rect.left);
     setTopPos(rect.top);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", viewPortChangeHandler);
+
+    const rectElement = document.getElementsByTagName("circle");
+    const rect = rectElement!.item(0)!.getBoundingClientRect();
+    setWidth(rect.width);
+    setLeftPos(rect.left);
+    setTopPos(rect.top);
+    return () => {
+      window.removeEventListener("resize", viewPortChangeHandler);
+    };
   }, []);
   if (!image) {
     return null;
@@ -34,7 +47,7 @@ const ImageViewProfileImage = () => {
       className={styles.profile}
     >
       <Image
-        src={URL.createObjectURL(image)}
+        src={image}
         fill={true}
         style={{
           borderRadius: "100%",

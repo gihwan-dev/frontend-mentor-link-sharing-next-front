@@ -20,7 +20,7 @@ const LinksImageView = () => {
           <ImageViewListItem
             index={index}
             title={item.title}
-            key={Math.random().toString().slice(2)}
+            key={`${item.id}-image.view.list.item`}
           />
         );
       })}

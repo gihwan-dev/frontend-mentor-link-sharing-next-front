@@ -32,6 +32,7 @@
           display: flex;
           flex-direction: row;
           .btn-drag-and-drop {
+            flex-direction: row;
             align-items: center;
             background-color: transparent;
             border: none;
@@ -123,6 +124,7 @@
     flex-direction: column;
     gap: 0.25em;
     z-index: 0;
+    position: relative;
 
 
     label {
@@ -166,7 +168,7 @@
 .drop-down-menu {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  position: relative;
+  position: absolute;
   height: 10rem;
   overflow: scroll;
   background-color: white;
@@ -176,7 +178,7 @@
   gap: 0.75rem;
   box-sizing: border-box;
   border-radius: 0.5rem;
-  top: 0.75rem;
+  top: 5rem;
 
 
   li {
@@ -267,4 +269,17 @@
 
 .btn-drag-and-drop {
   cursor: pointer;
+}
+
+.isInvalid {
+  border: 1px solid #FF3939 !important;
+}
+
+.invalidMsg {
+  color: #FF3939;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  text-align: right;
 }

@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 1rem;
+  position: relative;
 
   label {
     font-size: 1rem;
@@ -37,4 +38,19 @@
 .isFocus {
   border: 1px solid #633CFF !important;
   box-shadow: 0 0 32px 0 rgba(99, 60, 255, 0.25);
+}
+
+.inValidInput {
+  border: 1px solid #FF3939 !important;
+}
+
+.inValidMsg {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: #FF3939;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
 }

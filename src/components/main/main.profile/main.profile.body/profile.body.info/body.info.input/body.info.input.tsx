@@ -2,7 +2,13 @@
 import styles from "./body.info.input.module.scss";
 import { ChangeEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
-import { setEmail, setFirstName, setLastName } from "@/stores/user-info.slice";
+import {
+  setEmail,
+  setFirstName,
+  setFirstNameValidate,
+  setLastName,
+  setLastNameValidate,
+} from "@/stores/user-info.slice";
 
 const BodyInfoInput: React.FC<{
   type: "First name" | "Last name" | "Email";
@@ -29,8 +35,10 @@ const BodyInfoInput: React.FC<{
     switch (type) {
       case "First name":
         dispatch(setFirstName(value));
+        dispatch(setFirstNameValidate(true));
         break;
       case "Last name":
+        dispatch(setLastNameValidate(true));
         dispatch(setLastName(value));
         break;
       case "Email":
@@ -50,6 +58,17 @@ const BodyInfoInput: React.FC<{
     }
   };
 
+  const returnValidationHandler = () => {
+    switch (type) {
+      case "First name":
+        return user.firstNameValidation;
+      case "Last name":
+        return user.lastNameValidation;
+      case "Email":
+        return true;
+    }
+  };
+
   const onFocusHandler = () => {
     setIsFocus(true);
   };
@@ -63,12 +82,23 @@ const BodyInfoInput: React.FC<{
       <label>{type + (isEssential ? "*" : "")}</label>
       <input
         value={returnValueHandler() ?? ""}
-        className={`${styles.input} ${isFocus ? styles.isFocus : ""}`}
+        className={`${styles.input} ${
+          isFocus
+            ? styles.isFocus
+            : returnValidationHandler()
+            ? ""
+            : styles.inValidInput
+        }`}
         onFocus={onFocusHandler}
         onBlur={onBlurHandler}
         placeholder={getPlaceHolder(type)}
         onChange={onChangeHandler}
-      />
+      ></input>
+      {returnValidationHandler() ? (
+        ""
+      ) : (
+        <p className={styles.inValidMsg}>Can not be empty.</p>
+      )}
     </div>
   );
 };

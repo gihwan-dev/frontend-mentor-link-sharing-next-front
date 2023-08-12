@@ -4,6 +4,7 @@ import React from "react";
 import { Instrument_Sans } from "next/font/google";
 import "src/styles/global.css";
 import ReduxProvider from "@/providers/redux.provider";
+import MyDndProvider from "@/providers/dnd.provider";
 
 export const metadata: Metadata = {
   title: "Frontend Mentor | Link-sharing app - created by Gihwan-dev",
@@ -35,7 +36,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={instrumentSans.className}>
       <body>
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          <MyDndProvider>{children}</MyDndProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

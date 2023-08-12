@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Platform {
+export interface Platform {
+  id: string;
   title: string;
+  link: string;
+  isLinkValid: boolean;
 }
 
 interface PlatformListState {
@@ -17,6 +20,16 @@ interface setPlatformInterface {
   title: string;
 }
 
+interface validationInterface {
+  index: number;
+  validation: boolean;
+}
+
+interface setLinkInterface {
+  index: number;
+  link: string;
+}
+
 export const platformSlice = createSlice({
   name: "platform",
   initialState,
@@ -26,7 +39,12 @@ export const platformSlice = createSlice({
       state.platforms[index].title = action.payload.title;
     },
     addPlatform: state => {
-      const newPlatform: Platform = { title: "Github" };
+      const newPlatform: Platform = {
+        id: Math.random().toString().slice(2),
+        title: "Github",
+        isLinkValid: true,
+        link: "",
+      };
       const newList = [...state.platforms, newPlatform];
       state.platforms = newList;
     },
@@ -36,10 +54,27 @@ export const platformSlice = createSlice({
       );
       state.platforms = newList;
     },
+    reOrderPlatform: (state, action: PayloadAction<Platform[]>) => {
+      state.platforms = action.payload;
+    },
+    setLinkValidation: (state, action: PayloadAction<validationInterface>) => {
+      state.platforms[action.payload.index].isLinkValid =
+        action.payload.validation;
+    },
+    setLink: (state, action: PayloadAction<setLinkInterface>) => {
+      const { index, link } = action.payload;
+      state.platforms[index].link = link;
+    },
   },
 });
 
-export const { setPlatform, addPlatform, removePlatform } =
-  platformSlice.actions;
+export const {
+  setPlatform,
+  addPlatform,
+  removePlatform,
+  reOrderPlatform,
+  setLinkValidation,
+  setLink,
+} = platformSlice.actions;
 
 export default platformSlice.reducer;
