@@ -28,6 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     if (fetchState === "ERROR") {
+      console.log("here");
       router.push("/login");
     }
 

@@ -49,6 +49,7 @@ const ImageViewProfileImage = () => {
       <Image
         src={image}
         fill={true}
+        objectFit={"cover"}
         style={{
           borderRadius: "100%",
         }}

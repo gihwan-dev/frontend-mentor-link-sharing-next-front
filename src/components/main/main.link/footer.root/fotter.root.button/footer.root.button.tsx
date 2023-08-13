@@ -13,7 +13,11 @@ import {
 import { useState } from "react";
 import { setLinkValidation } from "@/stores/platform.slice";
 import { postPlatform } from "@/utilities/platforms/fetch";
-import { updateUser, UpdateUserInterface } from "@/utilities/user/fetch";
+import {
+  updateUser,
+  UpdateUserInterface,
+  uploadImage,
+} from "@/utilities/user/fetch";
 
 const FooterRootButton = () => {
   const platforms = useAppSelector(state => state.platform.platforms);
@@ -52,13 +56,13 @@ const FooterRootButton = () => {
 
     try {
       const userInterface: UpdateUserInterface = {
-        image: user.image,
         username: user.firstName + " " + user.lastName,
         email: user.email,
       };
 
       const platformResponse = await postPlatform(platforms);
       const updateUserResponse = await updateUser(userInterface);
+      const uploadImageResponse = await uploadImage(user.image);
     } catch (error) {}
   };
 
