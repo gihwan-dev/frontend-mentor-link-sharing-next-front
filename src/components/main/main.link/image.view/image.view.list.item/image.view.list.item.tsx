@@ -7,18 +7,23 @@ import {
   listColorSelector,
   renderIcon,
 } from "@/utilities/link/links-utilities";
-import { useAppSelector } from "@/stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { motion } from "framer-motion";
 import { listVariants } from "@/styles/animation.variants";
+import { useGetPlatforms } from "@/utilities/platforms/react-query";
+import { initializePlatform, Platform } from "@/stores/platform.slice";
 
 const ImageViewListItem: React.FC<{
   index: number;
   title: string;
 }> = ({ index, title }) => {
+  const { data: fetchedPlatforms, isLoading, error } = useGetPlatforms();
   const platform = useAppSelector(state => state.platform.platforms[index]);
   const [leftPos, setLeftPos] = useState(0);
   const [topPos, setTopPos] = useState(0);
   const [width, setWidth] = useState(0);
+
+  const dispatch = useAppDispatch();
 
   const viewPortChangeHandler = () => {
     const rectElement = document.getElementsByTagName("rect");
@@ -27,6 +32,10 @@ const ImageViewListItem: React.FC<{
     setLeftPos(rect.left);
     setTopPos(rect.top);
   };
+
+  useEffect(() => {
+    dispatch(initializePlatform(fetchedPlatforms as Platform[]));
+  }, [dispatch, fetchedPlatforms]);
 
   useEffect(() => {
     window.addEventListener("resize", viewPortChangeHandler);

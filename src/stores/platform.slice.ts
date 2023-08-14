@@ -34,6 +34,9 @@ export const platformSlice = createSlice({
   name: "platform",
   initialState,
   reducers: {
+    initializePlatform: (state, action: PayloadAction<Platform[]>) => {
+      state.platforms = action.payload;
+    },
     setPlatform: (state, action: PayloadAction<setPlatformInterface>) => {
       const index = action.payload.index;
       state.platforms[index].title = action.payload.title;
@@ -69,6 +72,7 @@ export const platformSlice = createSlice({
 });
 
 export const {
+  initializePlatform,
   setPlatform,
   addPlatform,
   removePlatform,

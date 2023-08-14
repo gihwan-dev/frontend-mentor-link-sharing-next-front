@@ -2,7 +2,7 @@
 
 import styles from "./body.upload.input.module.scss";
 import UploadImage from "public/assets/images/icon-upload-image.svg";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { setImage } from "@/stores/user-info.slice";
@@ -10,6 +10,8 @@ import { setImage } from "@/stores/user-info.slice";
 const BodyUploadInput = () => {
   const userImage = useAppSelector(state => state.user.image);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {}, []);
 
   const onFileUploadedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;

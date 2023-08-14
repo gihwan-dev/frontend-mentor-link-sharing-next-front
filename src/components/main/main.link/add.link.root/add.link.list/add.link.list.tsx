@@ -6,13 +6,23 @@ import AddLinkListEmpty from "@/components/main/main.link/add.link.root/add.link
 import React, { useEffect, useState } from "react";
 import AddLinkListItem from "@/components/main/main.link/add.link.root/add.link.list/add.link.list.item/addLinkListItem";
 import { Reorder } from "framer-motion";
-import { reOrderPlatform } from "@/stores/platform.slice";
+import {
+  initializePlatform,
+  Platform,
+  reOrderPlatform,
+} from "@/stores/platform.slice";
+import { useGetPlatforms } from "@/utilities/platforms/react-query";
 
 const AddLinkList = () => {
   const reduxPlatforms = useAppSelector(state => state.platform.platforms);
   const [platforms, setPlatforms] = useState(reduxPlatforms);
+  const { data: fetchedPlatforms, isLoading, error } = useGetPlatforms();
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(initializePlatform(fetchedPlatforms as Platform[]));
+  }, [dispatch, fetchedPlatforms]);
 
   useEffect(() => {
     setPlatforms(reduxPlatforms);
