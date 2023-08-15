@@ -6,11 +6,7 @@ import AddLinkListEmpty from "@/components/main/main.link/add.link.root/add.link
 import React, { useEffect, useState } from "react";
 import AddLinkListItem from "@/components/main/main.link/add.link.root/add.link.list/add.link.list.item/addLinkListItem";
 import { Reorder } from "framer-motion";
-import {
-  initializePlatform,
-  Platform,
-  reOrderPlatform,
-} from "@/stores/platform.slice";
+import { initializePlatform, reOrderPlatform } from "@/stores/platform.slice";
 import { useGetPlatforms } from "@/utilities/platforms/react-query";
 
 const AddLinkList = () => {
@@ -21,7 +17,7 @@ const AddLinkList = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(initializePlatform(fetchedPlatforms as Platform[]));
+    dispatch(initializePlatform(fetchedPlatforms ?? []));
   }, [dispatch, fetchedPlatforms]);
 
   useEffect(() => {
