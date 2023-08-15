@@ -3,11 +3,11 @@ import { StatusCodes } from "http-status-codes";
 
 interface AuthFetchResult {
   status: "ACCEPTED" | "FAILED";
-  username?: string;
+  email?: string;
 }
 
 interface authResponseDto {
-  username: string;
+  email: string;
 }
 
 export type AuthFetchStatus = "LOADING" | "ERROR" | "SUCCESS";
@@ -23,7 +23,7 @@ export const authFetcher = async (): Promise<AuthFetchResult> => {
       const user = (await result.json()) as authResponseDto;
       return {
         status: "ACCEPTED",
-        username: user.username,
+        email: user.email,
       };
     }
 

@@ -1,0 +1,25 @@
+.text {
+  position: absolute;
+
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 3.5rem;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  color: #333;
+}
+
+.email {
+  color: #737373;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+}

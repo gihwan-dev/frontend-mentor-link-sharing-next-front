@@ -1,8 +1,41 @@
+@import "src/styles/root";
+
 .container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  overflow: auto;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  .item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 12px solid $GREY-LIGHT;
+    border-right-color: $BLUE-DEFAULT;
+    border-radius: 100%;
+    align-self: center;
+    animation: spin 1s infinite;
+  }
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+}
 }

@@ -56,3 +56,11 @@
     }
   }
 }
+
+@media (max-width: 767px) {
+  .container {
+    p {
+      display: none;
+    }
+  }
+}

@@ -7,25 +7,54 @@ import {
   listColorSelector,
   renderIcon,
 } from "@/utilities/link/links-utilities";
+import { useAppSelector } from "@/stores/hooks";
+import { motion } from "framer-motion";
+import { listVariants } from "@/styles/animation.variants";
 
 const ImageViewListItem: React.FC<{
   index: number;
   title: string;
 }> = ({ index, title }) => {
+  const platform = useAppSelector(state => state.platform.platforms[index]);
   const [leftPos, setLeftPos] = useState(0);
   const [topPos, setTopPos] = useState(0);
   const [width, setWidth] = useState(0);
 
-  useEffect(() => {
+  const viewPortChangeHandler = () => {
     const rectElement = document.getElementsByTagName("rect");
     const rect = rectElement!.item(index + 2)!.getBoundingClientRect();
     setWidth(rect.width - 32);
     setLeftPos(rect.left);
     setTopPos(rect.top);
-  }, []);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", viewPortChangeHandler);
+
+    const rectElement = document.getElementsByTagName("rect");
+    const rect = rectElement!.item(index + 2)!.getBoundingClientRect();
+    setWidth(rect.width - 32);
+    setLeftPos(rect.left);
+    setTopPos(rect.top);
+    return () => {
+      window.removeEventListener("resize", viewPortChangeHandler);
+    };
+  }, [index]);
+
+  if (!platform) {
+    return null;
+  }
+
+  if (leftPos === 0 || topPos === 0) {
+    return null;
+  }
+
   const styleObj = listColorSelector(title);
   return (
-    <div
+    <motion.div
+      variants={listVariants(index)}
+      initial={"hidden"}
+      animate={"show"}
       style={{
         left: leftPos,
         top: topPos,
@@ -49,15 +78,15 @@ const ImageViewListItem: React.FC<{
         <p>{title}</p>
       </div>
       <div
-        className={
+        className={`${
           title === "Frontend Mentor"
             ? styles["svg-black"]
             : styles["svg-white"]
-        }
+        } ${styles.arrow}`}
       >
         <MoveToLinkIcon />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

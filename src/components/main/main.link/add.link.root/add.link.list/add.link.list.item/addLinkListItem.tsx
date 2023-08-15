@@ -7,8 +7,14 @@ import LinkIcon from "public/assets/images/icon-link.svg";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@/stores/hooks";
 import { useDispatch } from "react-redux";
-import { removePlatform, setPlatform } from "@/stores/platform.slice";
+import {
+  removePlatform,
+  setLink,
+  setLinkValidation,
+  setPlatform,
+} from "@/stores/platform.slice";
 import { MenuList, renderIcon } from "@/utilities/link/links-utilities";
+import { Reorder, useDragControls } from "framer-motion";
 
 const AddLinkListItem: React.FC<{
   index: number;
@@ -17,6 +23,8 @@ const AddLinkListItem: React.FC<{
   const platformDispatch = useDispatch();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const controls = useDragControls();
 
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
@@ -43,12 +51,14 @@ const AddLinkListItem: React.FC<{
     setInputIsFocused(false);
   };
 
-  const onMenuListClickHandler = (
-    selectedTitle: string,
-    selectedIcon: React.JSX.Element,
-  ) => {
+  const onMenuListClickHandler = (selectedTitle: string) => {
     platformDispatch(setPlatform({ index, title: selectedTitle }));
     setIsMenuOpen(false);
+  };
+
+  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    platformDispatch(setLinkValidation({ index, validation: true }));
+    platformDispatch(setLink({ index, link: event.currentTarget.value }));
   };
 
   useEffect(() => {
@@ -62,6 +72,10 @@ const AddLinkListItem: React.FC<{
     };
   }, []);
 
+  if (!platform) {
+    return null;
+  }
+
   const menubar = (
     <ul
       onMouseLeave={closeMenuListHandler}
@@ -74,9 +88,7 @@ const AddLinkListItem: React.FC<{
         return (
           <React.Fragment key={item.title}>
             <li
-              onClick={() =>
-                onMenuListClickHandler(item.title, <>{item.icon}</>)
-              }
+              onClick={() => onMenuListClickHandler(item.title)}
               className={item.title === platform.title ? styles.isActive : ""}
             >
               {item.icon}
@@ -90,9 +102,17 @@ const AddLinkListItem: React.FC<{
   );
 
   return (
-    <li className={styles.item}>
+    <Reorder.Item
+      dragControls={controls}
+      dragListener={false}
+      value={platform}
+      className={styles.item}
+    >
       <div className={styles.top}>
-        <button className={styles["btn-drag-and-drop"]}>
+        <button
+          onPointerDown={e => controls.start(e)}
+          className={styles["btn-drag-and-drop"]}
+        >
           <DragAndDropIcon />
           <p>Link #{index + 1}</p>
         </button>
@@ -118,16 +138,31 @@ const AddLinkListItem: React.FC<{
       </div>
       <div className={styles["link-input"]}>
         <label>Link</label>
-        <div className={inputIsFocused ? styles["input-focused"] : ""}>
+        <div
+          className={
+            inputIsFocused
+              ? styles["input-focused"]
+              : platform.isLinkValid
+              ? ""
+              : styles.isInvalid
+          }
+        >
           <LinkIcon />
           <input
+            value={platform.link}
+            onChange={inputChangeHandler}
             inputMode={"url"}
             onFocus={onInputFocusHandler}
             onBlur={onInputBlurHandler}
           />
+          {platform.isLinkValid ? (
+            ""
+          ) : (
+            <p className={styles.invalidMsg}>Can not be empty.</p>
+          )}
         </div>
       </div>
-    </li>
+    </Reorder.Item>
   );
 };
 

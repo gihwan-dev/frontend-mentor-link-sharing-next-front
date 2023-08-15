@@ -9,7 +9,8 @@
   background-color: #FAFAFA;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 2vh;
 
   .text-field {
     display: flex;
@@ -29,7 +30,8 @@
 
     p {
       text-align: center;
-      width: 30.5rem;
+      width: 100%;
+      max-width: 30.5rem;
       font-size: 1rem;
       font-style: normal;
       font-weight: 400;
@@ -38,3 +40,16 @@
     }
   }
 }
+
+@media (max-width: 767px) {
+  .image {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .small {
+    display: none;
+  }
+}
+

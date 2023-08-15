@@ -1,0 +1,9 @@
+@import "src/styles/root";
+
+.profile {
+  position: absolute;
+
+  img {
+    border: 4px solid $BLUE-DEFAULT;
+  }
+}

@@ -21,3 +21,9 @@
   background-color: $BLUE-ACTIVE;
   border: 1px solid $BLUE-ACTIVE;
 }
+
+@media (max-width: 767px) {
+  .button {
+    width: 100%;
+  }
+}
