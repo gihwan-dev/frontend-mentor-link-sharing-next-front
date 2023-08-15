@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { GetPlatformDto } from "@/utilities/platforms/react-query";
 
 export interface Platform {
   id: string;
@@ -34,8 +35,19 @@ export const platformSlice = createSlice({
   name: "platform",
   initialState,
   reducers: {
-    initializePlatform: (state, action: PayloadAction<Platform[]>) => {
-      state.platforms = action.payload;
+    initializePlatform: (state, action: PayloadAction<GetPlatformDto[]>) => {
+      if (!action.payload) {
+        return;
+      }
+      const newPlatforms = action.payload.map<Platform>(item => {
+        return {
+          id: item.id,
+          link: item.link,
+          title: item.title,
+          isLinkValid: true,
+        };
+      });
+      state.platforms = [...newPlatforms];
     },
     setPlatform: (state, action: PayloadAction<setPlatformInterface>) => {
       const index = action.payload.index;

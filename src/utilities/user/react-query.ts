@@ -4,16 +4,26 @@ import { SERVER_URL } from "@/const";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchImage = () =>
-  fetch(`${SERVER_URL}`, { credentials: "include" }).then(res => res.json());
+  fetch(`${SERVER_URL}/user/image`, { credentials: "include" })
+    .then(res => res.blob())
+    .then(blob => URL.createObjectURL(blob));
 
 export const useGetImage = () => {
-  const { data, error, isLoading } = useQuery<File>({
+  const { data, error, isLoading } = useQuery<string>({
     queryKey: ["userImage"],
     queryFn: fetchImage,
   });
 
+  if (!data) {
+    return {
+      data: undefined,
+      error,
+      isLoading,
+    };
+  }
+
   return {
-    data,
+    data: data,
     error,
     isLoading,
   };

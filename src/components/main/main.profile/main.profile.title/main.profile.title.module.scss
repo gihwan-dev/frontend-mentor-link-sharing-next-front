@@ -21,3 +21,11 @@
     line-height: 150%;
   }
 }
+
+@media (max-width: 767px) {
+  .title {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+}

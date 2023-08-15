@@ -2,10 +2,19 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { SERVER_URL } from "@/const";
-import { Platform } from "@/stores/platform.slice";
+
+export interface GetPlatformDto {
+  id: string;
+  link: string;
+  title: string;
+}
+
+interface GetPlatformsDto {
+  platforms: GetPlatformDto[];
+}
 
 export const useGetPlatforms = () => {
-  const { isLoading, error, data } = useQuery<Platform[]>({
+  const { isLoading, error, data } = useQuery<GetPlatformsDto>({
     queryKey: ["platformsData"],
     queryFn: () =>
       fetch(`${SERVER_URL}/platform`, {

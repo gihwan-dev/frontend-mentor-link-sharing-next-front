@@ -1,6 +1,6 @@
 "use client";
 import styles from "./body.info.input.module.scss";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import {
   setEmail,
@@ -9,6 +9,7 @@ import {
   setLastName,
   setLastNameValidate,
 } from "@/stores/user-info.slice";
+import { useGetUserProfile } from "@/utilities/user/react-query";
 
 const BodyInfoInput: React.FC<{
   type: "First name" | "Last name" | "Email";
@@ -18,6 +19,28 @@ const BodyInfoInput: React.FC<{
 
   const user = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+
+  const { data: fetchedUserProfile, error, isLoading } = useGetUserProfile();
+
+  useEffect(() => {
+    if (!!fetchedUserProfile?.firstName && !user.firstName) {
+      dispatch(setFirstName(fetchedUserProfile.firstName));
+    }
+    if (!!fetchedUserProfile?.lastName && !user.lastName) {
+      dispatch(setLastName(fetchedUserProfile.lastName));
+    }
+    if (!!fetchedUserProfile?.email && !user.email) {
+      dispatch(setEmail(fetchedUserProfile.email));
+    }
+  }, [
+    user.email,
+    user.firstName,
+    user.lastName,
+    fetchedUserProfile?.firstName,
+    fetchedUserProfile?.lastName,
+    fetchedUserProfile?.email,
+    dispatch,
+  ]);
 
   const getPlaceHolder = (enteredType: string) => {
     switch (enteredType) {
@@ -29,6 +52,7 @@ const BodyInfoInput: React.FC<{
         return "e.g. email@example.com";
     }
   };
+
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
 

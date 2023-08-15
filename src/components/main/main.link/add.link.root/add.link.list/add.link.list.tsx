@@ -3,44 +3,55 @@
 import styles from "./add.link.list.module.scss";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import AddLinkListEmpty from "@/components/main/main.link/add.link.root/add.link.list/add.link.list.empty/add.link.list.empty";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AddLinkListItem from "@/components/main/main.link/add.link.root/add.link.list/add.link.list.item/addLinkListItem";
 import { Reorder } from "framer-motion";
-import { initializePlatform, reOrderPlatform } from "@/stores/platform.slice";
+import {
+  initializePlatform,
+  Platform,
+  reOrderPlatform,
+} from "@/stores/platform.slice";
 import { useGetPlatforms } from "@/utilities/platforms/react-query";
 
 const AddLinkList = () => {
   const reduxPlatforms = useAppSelector(state => state.platform.platforms);
-  const [platforms, setPlatforms] = useState(reduxPlatforms);
   const { data: fetchedPlatforms, isLoading, error } = useGetPlatforms();
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(initializePlatform(fetchedPlatforms ?? []));
+    if (!!fetchedPlatforms && reduxPlatforms.length === 0) {
+      dispatch(initializePlatform(fetchedPlatforms.platforms));
+    }
   }, [dispatch, fetchedPlatforms]);
 
-  useEffect(() => {
-    setPlatforms(reduxPlatforms);
-  }, [reduxPlatforms]);
+  if (isLoading && reduxPlatforms.length === 0) {
+    return (
+      <div className={styles.loading}>
+        <div className={styles.item}></div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    dispatch(reOrderPlatform(platforms));
-  }, [dispatch, platforms]);
+  if (error && reduxPlatforms.length === 0) {
+    return <div className={styles.error}></div>;
+  }
 
   return (
     <React.Fragment>
-      {platforms.length === 0 ? (
+      {reduxPlatforms.length === 0 ? (
         <AddLinkListEmpty />
       ) : (
         <Reorder.Group
           id={"reorder-group"}
           axis={"y"}
-          onReorder={setPlatforms}
-          values={platforms}
+          onReorder={(item: Platform[]) => {
+            dispatch(reOrderPlatform(item));
+          }}
+          values={reduxPlatforms}
           className={styles.container}
         >
-          {platforms.map((i, index) => {
+          {reduxPlatforms.map((i, index) => {
             return (
               <AddLinkListItem
                 key={`${i.id}-add.link.list.item`}

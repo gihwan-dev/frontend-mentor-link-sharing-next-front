@@ -4,6 +4,7 @@ import styles from "./image.view.profile.image.module.scss";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAppSelector } from "@/stores/hooks";
+import { useGetImage } from "@/utilities/user/react-query";
 
 const ImageViewProfileImage = () => {
   const [leftPos, setLeftPos] = useState(0);
@@ -11,6 +12,8 @@ const ImageViewProfileImage = () => {
   const [width, setWidth] = useState(0);
 
   const image = useAppSelector(state => state.user.image);
+
+  const { data: fetchedUserImage, isLoading, error } = useGetImage();
 
   const viewPortChangeHandler = () => {
     const rectElement = document.getElementsByTagName("circle");
@@ -32,7 +35,7 @@ const ImageViewProfileImage = () => {
       window.removeEventListener("resize", viewPortChangeHandler);
     };
   }, []);
-  if (!image) {
+  if (!image && !fetchedUserImage) {
     return null;
   }
 
@@ -47,7 +50,7 @@ const ImageViewProfileImage = () => {
       className={styles.profile}
     >
       <Image
-        src={image}
+        src={image ?? fetchedUserImage ?? ""}
         fill={true}
         objectFit={"cover"}
         style={{
