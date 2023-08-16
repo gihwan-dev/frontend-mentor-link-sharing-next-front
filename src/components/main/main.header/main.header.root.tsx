@@ -16,11 +16,11 @@ const MainHeaderRoot = () => {
   useEffect(() => {
     authFetcher()
       .then(result => {
-        if (result.email === undefined) {
+        if (result.id === undefined) {
           router.push("/login");
           return;
         }
-        setUsername(result.email);
+        setUsername(result.id);
       })
       .catch(error => {
         window.alert(
