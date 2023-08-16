@@ -1,0 +1,9 @@
+@import "src/styles/root";
+
+.decoration {
+  width: 100vw;
+  height: 30vh;
+  position: absolute;
+  background-color: $BLUE-DEFAULT;
+  border-radius: 0 0 2rem 2rem;
+}
