@@ -1,6 +1,6 @@
-import { sql } from "@vercel/postgres";
-
 import styles from "./page.module.scss";
+import PreviewHeader from "@/components/preview/preview.header/preview.header";
+import PreviewBody from "@/components/preview/preview.body";
 
 interface PreviewPageParams {
   params: {
@@ -9,11 +9,11 @@ interface PreviewPageParams {
 }
 
 const PreviewPage: React.FC<PreviewPageParams> = async ({ params }) => {
-  const { rows } = await sql`SELECT * FROM users WHERE User_id=${params.id}`;
   return (
     <div>
       <div className={styles.decoration}></div>
-      <h1>{params.id} Preview Page.</h1>
+      <PreviewHeader />
+      <PreviewBody id={params.id} />
     </div>
   );
 };
