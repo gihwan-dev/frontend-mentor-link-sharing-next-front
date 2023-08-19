@@ -1,0 +1,54 @@
+.item {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  gap: 0.5rem;
+
+  div {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+  }
+
+  p {
+    flex: 1 0 0;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+  }
+}
+
+.svg-white {
+  svg {
+    path {
+      fill: #737373;
+    }
+
+    path:first-child {
+      fill: white;
+    }
+  }
+
+}
+
+.svg-black {
+  svg {
+    fill: none;
+  }
+}
+
+.arrow {
+  svg {
+    path {
+      fill: black;
+    }
+  }
+}
+
+.item:hover {
+  opacity: 0.8;
+}
