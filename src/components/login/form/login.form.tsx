@@ -180,6 +180,7 @@ const LoginForm = () => {
         httpOnly: true,
         path: "/",
         secure: true,
+        domain: ".frontend-mentor-link-sharing-nest-server.vercel.app",
       });
       setSuccessMsg(data.message);
       setTimeout(() => {
