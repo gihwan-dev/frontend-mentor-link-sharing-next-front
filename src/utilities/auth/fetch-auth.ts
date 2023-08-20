@@ -19,6 +19,8 @@ export const authFetcher = async (): Promise<AuthFetchResult> => {
       cache: "no-cache",
     });
 
+    console.log(result);
+
     if (result.status === StatusCodes.ACCEPTED) {
       const user = (await result.json()) as authResponseDto;
       return {
