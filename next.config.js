@@ -4,12 +4,15 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["localhost", "127.0.0.1"],
+    domains: [
+      "localhost",
+      "127.0.0.1",
+      "frontend-mentor-link-sharing-nest-server.vercel.app",
+    ],
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "8000",
+        protocol: "https",
+        hostname: "frontend-mentor-link-sharing-nest-server.vercel.app",
         pathname: "user/image/**",
       },
     ],
