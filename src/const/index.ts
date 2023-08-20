@@ -1,5 +1,5 @@
 export const SERVER_URL =
-  "https://frontend-mentor-link-sharing-nest-server.vercel.app/";
+  "https://frontend-mentor-link-sharing-nest-server.vercel.app";
 
 export const SCROLL = {
   DRAG_SCROLL_THRESHOLD: 50,
