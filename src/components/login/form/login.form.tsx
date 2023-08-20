@@ -19,6 +19,7 @@ import styles from "./login.form.module.scss";
 import { SERVER_URL } from "@/const";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";
+import Cookies from "universal-cookie";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -168,9 +169,12 @@ const LoginForm = () => {
           }, 2000);
         }, 2000);
       }
-      console.log(response);
-      const data = (await response.json()) as { message: string };
-      console.log(data);
+      const data = (await response.json()) as {
+        message: string;
+        token: string;
+      };
+      const cookies = new Cookies();
+      cookies.set("frontend-mentor-link-sharing", data.token);
       setSuccessMsg(data.message);
       setTimeout(() => {
         setIsLoading(false);
