@@ -168,7 +168,9 @@ const LoginForm = () => {
           }, 2000);
         }, 2000);
       }
+      console.log(response);
       const data = (await response.json()) as { message: string };
+      console.log(data);
       setSuccessMsg(data.message);
       setTimeout(() => {
         setIsLoading(false);
