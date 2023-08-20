@@ -179,6 +179,7 @@ const LoginForm = () => {
         maxAge: 60 * 60 * 1000,
         httpOnly: true,
         path: "/",
+        secure: true,
       });
       setSuccessMsg(data.message);
       setTimeout(() => {
