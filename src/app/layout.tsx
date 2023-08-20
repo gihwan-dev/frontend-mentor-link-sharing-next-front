@@ -6,6 +6,7 @@ import "src/styles/global.css";
 import ReduxProvider from "@/providers/redux.provider";
 import MyDndProvider from "@/providers/dnd.provider";
 import ReactQueryProvider from "@/providers/react-query.provider";
+import MyCookieProvider from "@/providers/cookie.provider";
 
 export const metadata: Metadata = {
   title: "Frontend Mentor | Link-sharing app - created by Gihwan-dev",
@@ -37,11 +38,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={instrumentSans.className}>
       <body>
-        <ReactQueryProvider>
-          <ReduxProvider>
-            <MyDndProvider>{children}</MyDndProvider>
-          </ReduxProvider>
-        </ReactQueryProvider>
+        <MyCookieProvider>
+          <ReactQueryProvider>
+            <ReduxProvider>
+              <MyDndProvider>{children}</MyDndProvider>
+            </ReduxProvider>
+          </ReactQueryProvider>
+        </MyCookieProvider>
       </body>
     </html>
   );

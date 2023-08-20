@@ -173,9 +173,13 @@ const LoginForm = () => {
         message: string;
         token: string;
       };
-      console.log(data);
       const cookies = new Cookies();
-      cookies.set("frontend-mentor-link-sharing", data.token);
+      cookies.set("frontend-mentor-link-sharing", data.token, {
+        sameSite: "none",
+        maxAge: 60 * 60 * 1000,
+        httpOnly: true,
+        path: "/",
+      });
       setSuccessMsg(data.message);
       setTimeout(() => {
         setIsLoading(false);
