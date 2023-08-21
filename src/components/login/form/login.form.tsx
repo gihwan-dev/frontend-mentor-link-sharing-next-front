@@ -19,7 +19,7 @@ import styles from "./login.form.module.scss";
 import { SERVER_URL } from "@/const";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -37,10 +37,6 @@ const LoginForm = () => {
   const validationState = useAppSelector(state => state.validation);
 
   const [failedMsg, setFailedMsg] = useState("");
-
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "frontend-mentor-link-sharing",
-  ]);
 
   const router = useRouter();
 
@@ -177,13 +173,13 @@ const LoginForm = () => {
         message: string;
         token: string;
       };
-      setCookie("frontend-mentor-link-sharing", data.token, {
+
+      Cookies.set("frontend-mentor-link-sharing", data.token, {
+        domain: "fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net",
         path: "/",
-        maxAge: 3600,
         sameSite: "none",
         secure: true,
-        domain: "fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net",
-        httpOnly: true,
+        expires: 1,
       });
       setSuccessMsg(data.message);
       setTimeout(() => {
