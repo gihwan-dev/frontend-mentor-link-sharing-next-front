@@ -1,19 +1,45 @@
 .btn {
   padding: 0.7rem 1.7rem;
   border-radius: 0.5rem;
-  background-color: #633CFF;
+  background-color: #633cff;
 
   color: white;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
   line-height: 150%;
-  border: 1px solid #633CFF;
+  border: 1px solid #633cff;
 }
 
 .btn:hover {
   cursor: pointer;
-  background-color: #BEADFF;
+  background-color: #beadff;
   box-shadow: 0 0 32px 0 rgba(99, 60, 255, 0.25);
-  border: 1px solid #BEADFF;
+  border: 1px solid #beadff;
+}
+
+.tooltip {
+  background-color: white;
+  padding: 0.7rem 1.7rem;
+  border-radius: 0.5rem;
+  position: absolute;
+  right: 1.5rem;
+  bottom: -3rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  animation: slide-in-from-right 0.3s ease-in-out forwards;
+}
+
+@keyframes slide-in-from-right {
+  0% {
+    transform: translateX(3rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

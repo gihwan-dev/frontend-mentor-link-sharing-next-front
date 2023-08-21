@@ -10,7 +10,7 @@ interface PreviewPageParams {
 
 const PreviewPage: React.FC<PreviewPageParams> = async ({ params }) => {
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.decoration}></div>
       <PreviewHeader />
       <PreviewBody id={params.id} />

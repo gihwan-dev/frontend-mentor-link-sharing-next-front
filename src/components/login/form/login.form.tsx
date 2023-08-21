@@ -19,7 +19,7 @@ import styles from "./login.form.module.scss";
 import { SERVER_URL } from "@/const";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";
-import Cookies from "universal-cookie";
+import { useCookies } from "react-cookie";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -37,6 +37,10 @@ const LoginForm = () => {
   const validationState = useAppSelector(state => state.validation);
 
   const [failedMsg, setFailedMsg] = useState("");
+
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "frontend-mentor-link-sharing",
+  ]);
 
   const router = useRouter();
 
@@ -173,14 +177,13 @@ const LoginForm = () => {
         message: string;
         token: string;
       };
-      const cookies = new Cookies();
-      cookies.set("frontend-mentor-link-sharing", data.token, {
-        sameSite: "none",
-        maxAge: 60 * 60 * 1000,
-        httpOnly: true,
+      setCookie("frontend-mentor-link-sharing", data.token, {
         path: "/",
+        maxAge: 3600,
+        sameSite: "none",
         secure: true,
-        domain: ".fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net",
+        domain: "fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net",
+        httpOnly: true,
       });
       setSuccessMsg(data.message);
       setTimeout(() => {
@@ -194,7 +197,9 @@ const LoginForm = () => {
           }, 1500);
         }, 2000);
       }, 2000);
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   if (isLoading) {
