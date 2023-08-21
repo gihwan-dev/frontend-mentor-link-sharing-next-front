@@ -19,7 +19,6 @@ import styles from "./login.form.module.scss";
 import { SERVER_URL } from "@/const";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 
 const LoginForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -174,13 +173,6 @@ const LoginForm = () => {
         token: string;
       };
 
-      Cookies.set("frontend-mentor-link-sharing", data.token, {
-        domain: "fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net",
-        path: "/",
-        sameSite: "none",
-        secure: true,
-        expires: 1,
-      });
       setSuccessMsg(data.message);
       setTimeout(() => {
         setIsLoading(false);
