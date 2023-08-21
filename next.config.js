@@ -4,12 +4,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: [
-      "localhost",
-      "127.0.0.1",
-      "frontend-mentor-link-sharing-nest-server.vercel.app",
-      "fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net",
-    ],
+    domains: ["fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net"],
     remotePatterns: [
       {
         protocol: "https",
