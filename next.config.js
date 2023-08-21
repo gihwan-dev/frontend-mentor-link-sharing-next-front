@@ -5,13 +5,6 @@ const nextConfig = {
   },
   images: {
     domains: ["fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net"],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net",
-        pathname: "user/image/**",
-      },
-    ],
   },
   webpack: config => {
     config.module.rules.push({
