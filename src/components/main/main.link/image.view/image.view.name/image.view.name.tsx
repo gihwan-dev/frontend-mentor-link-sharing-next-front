@@ -1,7 +1,9 @@
 "use client";
 
 import styles from "./image.view.name.module.scss";
-import { useAppSelector } from "@/stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
+import { setEmail, setFirstName, setLastName } from "@/stores/user-info.slice";
+import { useGetUserProfile } from "@/utilities/user/react-query";
 import { useEffect, useState } from "react";
 
 const ImageViewName = () => {
@@ -10,6 +12,30 @@ const ImageViewName = () => {
   const [leftPos, setLeftPos] = useState(0);
   const [topPos, setTopPos] = useState(0);
   const [width, setWidth] = useState(0);
+
+  const { data } = useGetUserProfile();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!!data?.firstName && !user.firstName) {
+      dispatch(setFirstName(data.firstName));
+    }
+    if (!!data?.lastName && !user.lastName) {
+      dispatch(setLastName(data.lastName));
+    }
+    if (!!data?.email && !user.email) {
+      dispatch(setEmail(data.email));
+    }
+  }, [
+    user.email,
+    user.firstName,
+    user.lastName,
+    data?.firstName,
+    data?.lastName,
+    data?.email,
+    dispatch,
+  ]);
 
   const viewPortChangeHandler = () => {
     const rectElement = document.getElementsByTagName("rect");

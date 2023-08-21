@@ -5,6 +5,7 @@ const nextConfig = {
   },
   images: {
     domains: ["fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net"],
+    // domains: ["localhost"],
   },
   webpack: config => {
     config.module.rules.push({

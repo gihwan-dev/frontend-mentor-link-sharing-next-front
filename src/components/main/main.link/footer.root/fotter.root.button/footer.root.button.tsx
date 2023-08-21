@@ -10,7 +10,7 @@ import {
   setFirstNameValidate,
   setLastNameValidate,
 } from "@/stores/user-info.slice";
-import { useState } from "react";
+import React, { useState } from "react";
 import { setLinkValidation } from "@/stores/platform.slice";
 import { postPlatform } from "@/utilities/platforms/fetch";
 import {
@@ -18,12 +18,18 @@ import {
   UpdateUserInterface,
   uploadImage,
 } from "@/utilities/user/fetch";
+import { motion } from "framer-motion";
+import { alertVariants } from "@/styles/animation.variants";
 
 const FooterRootButton = () => {
   const platforms = useAppSelector(state => state.platform.platforms);
   const user = useAppSelector(state => state.user);
 
   const [isValidForm, setIsValidForm] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccessful] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -60,22 +66,65 @@ const FooterRootButton = () => {
         email: user.email,
       };
 
+      setIsLoading(true);
+
       const platformResponse = await postPlatform(platforms);
       const updateUserResponse = await updateUser(userInterface);
       const uploadImageResponse = await uploadImage(user.image);
-    } catch (error) {}
+
+      if (!platformResponse && !updateUserResponse && !uploadImageResponse) {
+        throw new Error();
+      }
+
+      setIsLoading(false);
+      setIsSuccessful(true);
+      setTimeout(() => {
+        setIsSuccessful(false);
+      }, 2000);
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+      setTimeout(() => {
+        setIsError(false);
+      }, 2000);
+    }
   };
 
   return (
-    <button
-      onClick={onSubmitHandler}
-      disabled={platforms.length === 0}
-      className={`${styles.button} ${
-        platforms.length === 0 ? styles["button-empty"] : ""
-      }`}
-    >
-      save
-    </button>
+    <React.Fragment>
+      {isLoading ? (
+        <div className={`${styles.loading} ${styles.alert}`}></div>
+      ) : null}
+      {isSuccess ? (
+        <motion.div
+          initial={"hidden"}
+          animate={"show"}
+          variants={alertVariants()}
+          className={`${styles.complete} ${styles.alert}`}
+        >
+          Saved!
+        </motion.div>
+      ) : null}
+      {isError ? (
+        <motion.div
+          initial={"hidden"}
+          animate={"show"}
+          variants={alertVariants()}
+          className={`${styles.error} ${styles.alert}`}
+        >
+          Try again...
+        </motion.div>
+      ) : null}
+      <button
+        onClick={onSubmitHandler}
+        disabled={platforms.length === 0}
+        className={`${styles.button} ${
+          platforms.length === 0 ? styles["button-empty"] : ""
+        }`}
+      >
+        save
+      </button>
+    </React.Fragment>
   );
 };
 

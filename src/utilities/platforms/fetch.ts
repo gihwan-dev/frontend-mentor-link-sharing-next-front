@@ -14,5 +14,11 @@ export const postPlatform = async (platforms: Platform[]) => {
         platforms,
       }),
     });
-  } catch (error) {}
+    if (!response.ok) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    return false;
+  }
 };

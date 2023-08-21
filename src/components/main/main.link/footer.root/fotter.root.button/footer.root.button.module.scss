@@ -28,3 +28,41 @@
     width: 100%;
   }
 }
+
+.alert {
+  position: absolute;
+  top: 7rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.complete {
+  padding: 0.7rem 1.7rem;
+  background-color: white;
+  border: 1px solid $BLUE-DEFAULT;
+  border-radius: 0.5rem;
+  color: $BLUE-DEFAULT;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.loading {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  border: 3px solid $BLUE-DEFAULT;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

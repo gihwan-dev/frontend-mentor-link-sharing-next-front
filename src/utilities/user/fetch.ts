@@ -28,10 +28,13 @@ export const updateUser = async (updateUser: UpdateUserInterface) => {
         contactEmail: updateUser.email,
       }),
     });
-    if (response.ok) {
-      const data = await response.json();
+    if (!response.ok) {
+      return false;
     }
-  } catch (error) {}
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
 
 export const uploadImage = async (blobImageUrl: string | null) => {
@@ -50,5 +53,11 @@ export const uploadImage = async (blobImageUrl: string | null) => {
       cache: "no-cache",
       body: formData,
     });
-  } catch (error) {}
+    if (!response.ok) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
