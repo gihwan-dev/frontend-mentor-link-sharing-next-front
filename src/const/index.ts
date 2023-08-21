@@ -1,6 +1,6 @@
 export const SERVER_URL =
-  // "https://fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net";
-  "http://localhost:8000";
+  "https://fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net";
+// "http://localhost:8000";
 
 export const SCROLL = {
   DRAG_SCROLL_THRESHOLD: 50,
