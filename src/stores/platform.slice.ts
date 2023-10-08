@@ -70,7 +70,7 @@ export const platformSlice = createSlice({
       state.platforms = newList;
     },
     reOrderPlatform: (state, action: PayloadAction<Platform[]>) => {
-      state.platforms = action.payload;
+      state.platforms = [...action.payload];
     },
     setLinkValidation: (state, action: PayloadAction<validationInterface>) => {
       state.platforms[action.payload.index].isLinkValid =

@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@/stores/hooks";
 import { useDispatch } from "react-redux";
 import {
+  Platform,
   removePlatform,
   setLink,
   setLinkValidation,
@@ -17,9 +18,9 @@ import { MenuList, renderIcon } from "@/utilities/link/links-utilities";
 import { Reorder, useDragControls } from "framer-motion";
 
 const AddLinkListItem: React.FC<{
+  platform: Platform;
   index: number;
-}> = ({ index }) => {
-  const platform = useAppSelector(state => state.platform.platforms[index]);
+}> = ({ index, platform }) => {
   const platformDispatch = useDispatch();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -104,7 +105,6 @@ const AddLinkListItem: React.FC<{
   return (
     <Reorder.Item
       dragControls={controls}
-      dragListener={false}
       value={platform}
       className={styles.item}
     >
@@ -166,4 +166,4 @@ const AddLinkListItem: React.FC<{
   );
 };
 
-export default AddLinkListItem;
+export default React.memo(AddLinkListItem);

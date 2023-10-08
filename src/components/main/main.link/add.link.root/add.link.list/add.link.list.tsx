@@ -3,7 +3,7 @@
 import styles from "./add.link.list.module.scss";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import AddLinkListEmpty from "@/components/main/main.link/add.link.root/add.link.list/add.link.list.empty/add.link.list.empty";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AddLinkListItem from "@/components/main/main.link/add.link.root/add.link.list/add.link.list.item/addLinkListItem";
 import { Reorder } from "framer-motion";
 import {
@@ -23,7 +23,7 @@ const AddLinkList = () => {
     if (!!fetchedPlatforms && reduxPlatforms.length === 0) {
       dispatch(initializePlatform(fetchedPlatforms.platforms));
     }
-  }, [dispatch, fetchedPlatforms]);
+  }, [dispatch, fetchedPlatforms, reduxPlatforms.length]);
 
   if (isLoading && reduxPlatforms.length === 0) {
     return (
@@ -53,10 +53,7 @@ const AddLinkList = () => {
         >
           {reduxPlatforms.map((i, index) => {
             return (
-              <AddLinkListItem
-                key={`${i.id}-add.link.list.item`}
-                index={index}
-              />
+              <AddLinkListItem key={`${i.id}`} platform={i} index={index} />
             );
           })}
         </Reorder.Group>
