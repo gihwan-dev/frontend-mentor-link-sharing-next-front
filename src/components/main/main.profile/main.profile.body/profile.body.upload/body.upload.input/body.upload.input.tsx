@@ -2,17 +2,21 @@
 
 import styles from "./body.upload.input.module.scss";
 import UploadImage from "public/assets/images/icon-upload-image.svg";
-import { ChangeEvent } from "react";
+import {ChangeEvent} from "react";
 import Image from "next/image";
-import { useAppDispatch, useAppSelector } from "@/stores/hooks";
-import { setImage } from "@/stores/user-info.slice";
-import { useGetImage } from "@/utilities/user/react-query";
+import {useAppDispatch, useAppSelector} from "@/stores/hooks";
+import {setImage} from "@/stores/user-info.slice";
+import {useGetUserProfile} from "@/utilities/user/react-query";
 
 const BodyUploadInput = () => {
   const userImage = useAppSelector(state => state.user.image);
   const dispatch = useAppDispatch();
 
-  const { data: fetchedUserImage, isLoading, error } = useGetImage();
+  const { data, isLoading, error} = useGetUserProfile();
+
+  if (isLoading || error) {
+    return null;
+  }
 
   const onFileUploadedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -31,7 +35,7 @@ const BodyUploadInput = () => {
         type={"file"}
         name={"file"}
       />
-      {!fetchedUserImage ? (
+      {!data?.image ? (
         <>
           <UploadImage />
           <p>+ Upload Image</p>
@@ -40,7 +44,7 @@ const BodyUploadInput = () => {
         <>
           <Image
             objectFit={"cover"}
-            src={userImage ?? fetchedUserImage}
+            src={userImage ?? data.image}
             fill={true}
             alt={"image preview"}
             style={{

@@ -4,7 +4,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net"],
+    domains: ["fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net", "link-sharing-gihwan-dev.s3.ap-northeast-2.amazonaws.com"],
     // domains: ["localhost"],
   },
   webpack: config => {

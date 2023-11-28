@@ -1,25 +1,31 @@
+"use client";
+
 import styles from "./index.module.scss";
 import React from "react";
 import Image from "next/image";
+import {useGetUserProfile} from "@/utilities/user/react-query";
 
 const PreviewBodyImage: React.FC<{
   id: string;
 }> = ({ id }) => {
   // get image
-  const { SERVER_URL } = process.env;
 
-  const src = `${SERVER_URL}/user/image/${id}`;
+    const {data: user, isLoading, error} = useGetUserProfile();
+
+    if (isLoading || error) {
+        return null;
+    }
 
   return (
     <div className={styles.container}>
-      <Image
-        fill={true}
-        style={{
-          objectFit: "cover",
-        }}
-        src={src}
-        alt={"user image"}
-      />
+        {!user || !user.image || user.image == "" ? "" : <Image
+            fill={true}
+            style={{
+                objectFit: "cover",
+            }}
+            src={user?.image ?? ""}
+            alt={"user image"}
+        />}
     </div>
   );
 };

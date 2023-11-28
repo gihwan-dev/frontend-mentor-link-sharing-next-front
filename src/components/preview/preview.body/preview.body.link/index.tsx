@@ -1,7 +1,9 @@
+"use client";
+
 import styles from "./index.module.scss";
 import React from "react";
-import { sql } from "@vercel/postgres";
 import BodyLinkItem from "@/components/preview/preview.body/preview.body.link/body.link.item";
+import {useGetPlatforms} from "@/utilities/platforms/react-query";
 
 interface Platform {
   title: string;
@@ -11,23 +13,24 @@ interface Platform {
 
 const PreviewBodyLink: React.FC<{
   id: string;
-}> = async ({ id }) => {
-  try {
-    const { rows } =
-      await sql`SELECT platform_id, title, link FROM platforms WHERE owner=${id}`;
+}> = ({ id }) => {
 
-    const platforms = [...rows] as Platform[];
+  const {data, isLoading, error} = useGetPlatforms();
 
-    if (!platforms) {
+  if (isLoading || error) {
+    return null;
+  }
+
+    if (!data?.platforms) {
       return <p>목록을 찾을 수 없습니다. 다시 시도해 주세요.</p>;
     }
 
     return (
       <ul className={styles.list}>
-        {platforms.map(item => {
+        {data.platforms?.map(item => {
           return (
             <BodyLinkItem
-              key={item.platform_id}
+              key={item.id}
               title={item.title}
               link={item.link}
             />
@@ -35,9 +38,6 @@ const PreviewBodyLink: React.FC<{
         })}
       </ul>
     );
-  } catch (error) {
-    return <p>에러가 발생했습니다. 다시 시도해 주세요. </p>;
-  }
 };
 
 export default PreviewBodyLink;

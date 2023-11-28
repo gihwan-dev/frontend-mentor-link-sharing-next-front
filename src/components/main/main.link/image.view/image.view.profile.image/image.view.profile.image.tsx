@@ -1,10 +1,10 @@
 "use client";
 
 import styles from "./image.view.profile.image.module.scss";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Image from "next/image";
-import { useAppSelector } from "@/stores/hooks";
-import { useGetImage } from "@/utilities/user/react-query";
+import {useAppSelector} from "@/stores/hooks";
+import {useGetUserProfile} from "@/utilities/user/react-query";
 
 const ImageViewProfileImage = () => {
   const [leftPos, setLeftPos] = useState(0);
@@ -13,7 +13,7 @@ const ImageViewProfileImage = () => {
 
   const image = useAppSelector(state => state.user.image);
 
-  const { data: fetchedUserImage, isLoading, error } = useGetImage();
+  const {data: user, isLoading, error} = useGetUserProfile();
 
   const viewPortChangeHandler = () => {
     const rectElement = document.getElementsByTagName("circle");
@@ -35,7 +35,12 @@ const ImageViewProfileImage = () => {
       window.removeEventListener("resize", viewPortChangeHandler);
     };
   }, []);
-  if (!image && !fetchedUserImage) {
+
+  if (!image && !user?.image) {
+    return null;
+  }
+
+  if (isLoading || error) {
     return null;
   }
 
@@ -49,15 +54,15 @@ const ImageViewProfileImage = () => {
       }}
       className={styles.profile}
     >
-      <Image
-        src={image ?? fetchedUserImage ?? ""}
-        fill={true}
-        objectFit={"cover"}
-        style={{
-          borderRadius: "100%",
-        }}
-        alt={"profile image"}
-      />
+      { !image && !user?.image ? null : <Image
+          src={image ?? user?.image ?? ""}
+          fill={true}
+          objectFit={"cover"}
+          style={{
+            borderRadius: "100%",
+          }}
+          alt={"profile image"}
+      />}
     </div>
   );
 };

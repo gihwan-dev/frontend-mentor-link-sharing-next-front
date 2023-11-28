@@ -34,7 +34,7 @@ export const renderIcon = (name: string) => {
     case "Facebook":
       return <FacebookIcon />;
     case "Twitch":
-      return <TwitterIcon />;
+      return <TwitchIcon />;
     case "Dev.to":
       return <DevToIcon />;
     case "Codewars":

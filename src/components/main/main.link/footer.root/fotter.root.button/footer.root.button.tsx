@@ -60,7 +60,7 @@ const FooterRootButton = () => {
 
       let imageFile = null;
 
-      if (imageInput.files) {
+      if (imageInput?.files) {
         imageFile = imageInput.files[0] as File;
       }
 
@@ -85,6 +85,7 @@ const FooterRootButton = () => {
         setIsSuccessful(false);
       }, 2000);
     } catch (error) {
+      console.error(error);
       setIsLoading(false);
       setIsError(true);
       setTimeout(() => {

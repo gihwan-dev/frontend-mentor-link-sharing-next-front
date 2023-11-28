@@ -1,7 +1,7 @@
 "use client";
 
-import { SERVER_URL } from "@/const";
-import { useQuery } from "@tanstack/react-query";
+import {SERVER_URL} from "@/const";
+import {useQuery} from "@tanstack/react-query";
 
 const fetchImage = () =>
   fetch(`${SERVER_URL}/user/image`, { credentials: "include" })
@@ -33,6 +33,7 @@ interface GetUserInterface {
   firstName: string;
   lastName: string;
   email: string;
+  image: string;
 }
 
 const fetchUser = () =>

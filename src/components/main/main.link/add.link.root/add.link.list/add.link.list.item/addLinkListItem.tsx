@@ -4,28 +4,20 @@ import styles from "./add.link.list.item.module.scss";
 import DragAndDropIcon from "public/assets/images/icon-drag-and-drop.svg";
 import DownArrowIcon from "public/assets/images/icon-chevron-down.svg";
 import LinkIcon from "public/assets/images/icon-link.svg";
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "@/stores/hooks";
-import { useDispatch } from "react-redux";
-import {
-  Platform,
-  removePlatform,
-  setLink,
-  setLinkValidation,
-  setPlatform,
-} from "@/stores/platform.slice";
-import { MenuList, renderIcon } from "@/utilities/link/links-utilities";
-import { Reorder, useDragControls } from "framer-motion";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {Platform, removePlatform,} from "@/stores/platform.slice";
+import {MenuList, renderIcon} from "@/utilities/link/links-utilities";
 
 const AddLinkListItem: React.FC<{
   platform: Platform;
   index: number;
-}> = ({ index, platform }) => {
+  setCurPlatforms: Dispatch<SetStateAction<Platform[]>>;
+}> = ({ index, platform, setCurPlatforms }) => {
   const platformDispatch = useDispatch();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const controls = useDragControls();
 
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
@@ -53,13 +45,35 @@ const AddLinkListItem: React.FC<{
   };
 
   const onMenuListClickHandler = (selectedTitle: string) => {
-    platformDispatch(setPlatform({ index, title: selectedTitle }));
+    setCurPlatforms(prevState => {
+      const newState = prevState.map((item, i) => {
+        if (i === index) {
+          return {
+            ...item,
+            title : selectedTitle,
+          }
+        }
+        return item;
+      });
+      return newState;
+    })
     setIsMenuOpen(false);
   };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    platformDispatch(setLinkValidation({ index, validation: true }));
-    platformDispatch(setLink({ index, link: event.currentTarget.value }));
+    setCurPlatforms(prevState => {
+      const newState = prevState.map((item, i) => {
+        if (i === index) {
+          return {
+            ...item,
+            link : event.target.value,
+            isLinkValid : true,
+          }
+        }
+        return item;
+      });
+      return newState;
+    })
   };
 
   useEffect(() => {
@@ -103,14 +117,11 @@ const AddLinkListItem: React.FC<{
   );
 
   return (
-    <Reorder.Item
-      dragControls={controls}
-      value={platform}
+    <div
       className={styles.item}
     >
       <div className={styles.top}>
         <button
-          onPointerDown={e => controls.start(e)}
           className={styles["btn-drag-and-drop"]}
         >
           <DragAndDropIcon />
@@ -162,7 +173,7 @@ const AddLinkListItem: React.FC<{
           )}
         </div>
       </div>
-    </Reorder.Item>
+    </div>
   );
 };
 

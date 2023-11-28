@@ -1,6 +1,8 @@
+"use client";
+
 import styles from "./index.module.scss";
 import React from "react";
-import { sql } from "@vercel/postgres";
+import {useGetUserProfile} from "@/utilities/user/react-query";
 
 interface User {
   username: string;
@@ -9,12 +11,12 @@ interface User {
 
 const PreviewBodyInfo: React.FC<{
   id: string;
-}> = async ({ id }) => {
-  try {
-    const { rows } =
-      await sql`SELECT username, email FROM users WHERE User_id=${id}`;
+}> = ({ id }) => {
+    const {data: user, isLoading, error} = useGetUserProfile();
 
-    const user = rows[0] as User;
+    if (isLoading || error) {
+        return null;
+    }
 
     if (!user) {
       return (
@@ -27,18 +29,10 @@ const PreviewBodyInfo: React.FC<{
 
     return (
       <div className={styles.container}>
-        <h1>{user.username}</h1>
+        <h1>{user.firstName + " " + user.lastName}</h1>
         <h2>{user.email}</h2>
       </div>
     );
-  } catch (error) {
-    return (
-      <div className={styles.container}>
-        <h1>에러가 발생했습니다.</h1>
-        <h2>새로고침을 시도해 주세요.</h2>
-      </div>
-    );
-  }
 };
 
 export default PreviewBodyInfo;
