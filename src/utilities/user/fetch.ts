@@ -1,18 +1,9 @@
-import { SERVER_URL } from "@/const";
+import {SERVER_URL} from "@/const";
 
 export interface UpdateUserInterface {
   username: string;
   email: string | null;
 }
-
-export interface UploadImageInterface {
-  blobImageUrl: string;
-}
-
-const fetchData = async (blobUrl: string) => {
-  const response = await fetch(blobUrl);
-  return await response.blob();
-};
 
 export const updateUser = async (updateUser: UpdateUserInterface) => {
   try {
@@ -37,15 +28,14 @@ export const updateUser = async (updateUser: UpdateUserInterface) => {
   }
 };
 
-export const uploadImage = async (blobImageUrl: string | null) => {
+export const uploadImage = async (file: File | null) => {
   try {
-    if (!blobImageUrl) {
+    if (!file) {
       return;
     }
-    const fileBlob = await fetchData(blobImageUrl);
     const formData = new FormData();
 
-    formData.append("image", fileBlob);
+    formData.append("image", file, file.name);
 
     const response = await fetch(`${SERVER_URL}/user/image`, {
       method: "POST",

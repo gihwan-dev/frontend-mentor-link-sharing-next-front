@@ -1,25 +1,15 @@
 "use client";
 
 import styles from "./footer.root.button.module.scss";
-import { useAppDispatch, useAppSelector } from "@/stores/hooks";
-import {
-  isValidFirstName,
-  isValidLastName,
-} from "@/utilities/login/validation";
-import {
-  setFirstNameValidate,
-  setLastNameValidate,
-} from "@/stores/user-info.slice";
-import React, { useState } from "react";
-import { setLinkValidation } from "@/stores/platform.slice";
-import { postPlatform } from "@/utilities/platforms/fetch";
-import {
-  updateUser,
-  UpdateUserInterface,
-  uploadImage,
-} from "@/utilities/user/fetch";
-import { motion } from "framer-motion";
-import { alertVariants } from "@/styles/animation.variants";
+import {useAppDispatch, useAppSelector} from "@/stores/hooks";
+import {isValidFirstName, isValidLastName,} from "@/utilities/login/validation";
+import {setFirstNameValidate, setLastNameValidate,} from "@/stores/user-info.slice";
+import React, {useState} from "react";
+import {setLinkValidation} from "@/stores/platform.slice";
+import {postPlatform} from "@/utilities/platforms/fetch";
+import {updateUser, UpdateUserInterface, uploadImage,} from "@/utilities/user/fetch";
+import {motion} from "framer-motion";
+import {alertVariants} from "@/styles/animation.variants";
 
 const FooterRootButton = () => {
   const platforms = useAppSelector(state => state.platform.platforms);
@@ -66,11 +56,24 @@ const FooterRootButton = () => {
         email: user.email,
       };
 
+      const imageInput = document.getElementById("file") as HTMLInputElement;
+
+      let imageFile = null;
+
+      if (imageInput.files) {
+        imageFile = imageInput.files[0] as File;
+      }
+
+      if (imageFile && (imageFile.type !== "image/jpeg" && imageFile.type !== "image/png")) {
+        window.alert("올바른 이미지 형식을 업로드해 주세요. 이미지는 jpg, jpeg, png 만 입력 가능합니다.")
+        return;
+      }
+
       setIsLoading(true);
 
       const platformResponse = await postPlatform(platforms);
       const updateUserResponse = await updateUser(userInterface);
-      const uploadImageResponse = await uploadImage(user.image);
+      const uploadImageResponse = await uploadImage(imageFile);
 
       if (!platformResponse && !updateUserResponse && !uploadImageResponse) {
         throw new Error();
