@@ -59,6 +59,8 @@ const AddLinkList = () => {
           axis={"y"}
           values={reduxPlatforms}
           className={styles.container}
+          layoutScroll={true}
+
         >
           {curPlatforms.map((platform, index) => {
             return (
