@@ -1,7 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { SERVER_URL } from "@/const";
+import {useQuery} from "@tanstack/react-query";
+import {SERVER_URL} from "@/const";
+import {findOnePlatform} from "@/utilities/platforms/fetch";
 
 export interface GetPlatformDto {
   id: string;
@@ -27,3 +28,10 @@ export const useGetPlatforms = () => {
     isLoading,
   };
 };
+
+export const useFindOnePlatforms = (userId: string) => {
+  return useQuery({
+    queryKey: ["platforms", userId],
+    queryFn: () => findOnePlatform(userId),
+  })
+}

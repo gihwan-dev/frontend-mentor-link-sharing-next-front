@@ -5,6 +5,13 @@ export interface UpdateUserInterface {
   email: string | null;
 }
 
+type User = {
+  username: string,
+  contactEmail: string,
+  email: string,
+  image: string,
+}
+
 export const updateUser = async (updateUser: UpdateUserInterface) => {
   try {
     const response = await fetch(`${SERVER_URL}/user`, {
@@ -53,9 +60,10 @@ export const uploadImage = async (file: File | null) => {
 };
 
 export const findUserFetch = async (userId: string) => {
-  try {
-    const response = await fetch(``)
-  } catch (e) {
+    const response = await fetch(`${SERVER_URL}/user/${userId}`);
+    if (!response.ok) {
+      throw new Error("Network response is not ok.")
+    }
 
-  }
+    return await response.json() as User;
 }

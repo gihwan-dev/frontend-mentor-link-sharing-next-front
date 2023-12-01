@@ -2,6 +2,7 @@
 
 import {SERVER_URL} from "@/const";
 import {useQuery} from "@tanstack/react-query";
+import {findUserFetch} from "@/utilities/user/fetch";
 
 const fetchImage = () =>
   fetch(`${SERVER_URL}/user/image`, { credentials: "include" })
@@ -53,3 +54,11 @@ export const useGetUserProfile = () => {
     isLoading,
   };
 };
+
+export const useFindOneUser = (userId: string) => {
+  return useQuery(
+      {
+        queryKey: ["user", userId],
+        queryFn: () => findUserFetch(userId),
+  })
+}

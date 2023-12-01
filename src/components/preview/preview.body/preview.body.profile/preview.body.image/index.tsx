@@ -3,14 +3,14 @@
 import styles from "./index.module.scss";
 import React from "react";
 import Image from "next/image";
-import {useGetUserProfile} from "@/utilities/user/react-query";
+import {useFindOneUser} from "@/utilities/user/react-query";
 
 const PreviewBodyImage: React.FC<{
   id: string;
 }> = ({ id }) => {
   // get image
 
-    const {data: user, isLoading, error} = useGetUserProfile();
+    const {data: user, isLoading, error} = useFindOneUser(id);
 
     if (isLoading || error) {
         return null;

@@ -2,7 +2,7 @@
 
 import styles from "./index.module.scss";
 import React from "react";
-import {useGetUserProfile} from "@/utilities/user/react-query";
+import {useFindOneUser} from "@/utilities/user/react-query";
 
 interface User {
   username: string;
@@ -12,7 +12,7 @@ interface User {
 const PreviewBodyInfo: React.FC<{
   id: string;
 }> = ({ id }) => {
-    const {data: user, isLoading, error} = useGetUserProfile();
+    const {data: user, isLoading, error} = useFindOneUser(id);
 
     if (isLoading || error) {
         return null;
@@ -29,7 +29,7 @@ const PreviewBodyInfo: React.FC<{
 
     return (
       <div className={styles.container}>
-        <h1>{user.firstName + " " + user.lastName}</h1>
+        <h1>{user.username}</h1>
         <h2>{user.email}</h2>
       </div>
     );
