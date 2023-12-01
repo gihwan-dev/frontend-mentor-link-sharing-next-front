@@ -51,3 +51,11 @@ export const uploadImage = async (file: File | null) => {
     return false;
   }
 };
+
+export const findUserFetch = async (userId: string) => {
+  try {
+    const response = await fetch(``)
+  } catch (e) {
+
+  }
+}
