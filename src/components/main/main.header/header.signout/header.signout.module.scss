@@ -1,0 +1,47 @@
+@import "src/styles/root";
+
+.btn {
+  padding: 0.7rem 1.7rem;
+  border-radius: 0.5rem;
+  border: 1px solid $RED-DEFAULT;
+  background-color: white;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  color: $RED-DEFAULT;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: rgba(255, 57, 57, 0.2);
+}
+
+.icon {
+  svg {
+    path {
+      fill: $RED-DEFAULT;
+    }
+  }
+}
+
+
+@media (max-width: 767px) {
+  .btn {
+    padding: 0.7rem 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    .text {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .btn {
+    .icon {
+      display: none;
+    }
+  }
+}

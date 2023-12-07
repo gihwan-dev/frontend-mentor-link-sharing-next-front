@@ -13,3 +13,9 @@
     padding: 1rem 1rem 1rem 1.5rem;
   }
 }
+
+.button-list {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

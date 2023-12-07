@@ -3,10 +3,11 @@
 import styles from "./main.header.root.module.scss";
 import HeaderImage from "@/components/main/main.header/header.image";
 import HeaderNav from "@/components/main/main.header/header.nav";
-import { useEffect, useState } from "react";
-import { authFetcher } from "@/utilities/auth/fetch-auth";
-import { useRouter } from "next/navigation";
+import {useEffect, useState} from "react";
+import {authFetcher} from "@/utilities/auth/fetch-auth";
+import {useRouter} from "next/navigation";
 import HeaderPreview from "@/components/main/main.header/header.preview";
+import SignoutButton from "@/components/main/main.header/header.signout/SignoutButton";
 
 const MainHeaderRoot = () => {
   // get 요청 보내서 유저 확인
@@ -34,7 +35,10 @@ const MainHeaderRoot = () => {
     <nav className={styles.nav}>
       <HeaderImage />
       <HeaderNav />
-      <HeaderPreview id={username} />
+      <div className={styles["button-list"]}>
+          <SignoutButton />
+          <HeaderPreview id={username} />
+      </div>
     </nav>
   );
 };
