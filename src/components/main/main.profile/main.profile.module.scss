@@ -5,4 +5,11 @@
   flex: 1 0 0;
   flex-direction: column;
   gap: 2vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.main::-webkit-scrollbar {
+  display: none;
 }
