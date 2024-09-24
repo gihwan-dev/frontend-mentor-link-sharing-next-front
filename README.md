@@ -1,5 +1,4 @@
-# Frontend Mentor Link Sharing - NestJS Server
-
+# Frontend Mentor Link Sharing - Next front
 Frontend Mentor Link Sharing 프로젝트의 서버 측 구현체로, NestJS 프레임워크를 이용하여 구축되었습니다.
 
 ## 프로젝트 소개
